@@ -1,0 +1,157 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<div class="main">
+
+    <nav id="sidebar">  
+        <div class="sidebar-logo-area">
+            <img class="logo-div" class="logo-div" src="img/logo.jpg">
+            <button id="menuButtonClose" type="button" class="sidebar-close-btn init-hidden close" aria-label="Close">x</button>
+        </div>
+
+        <ul class="list-unstyled components">
+            <li class="active"><a class="nav-link" href="home"><i class="fa fa-fw fa-home"></i> Home</a></li>
+            <li><a class="nav-link" href="about"><i class="fa fa-fw fa-info"></i> About</a></li>
+            <li><a class="nav-link" href="announcs"><i class="fa fa-fw fa-bullhorn"></i> Announcements</a></li>
+            <li><a class="nav-link" href="docs"><i class="fa fa-fw fa-book"></i> Documents</a></li>
+
+            {% if current_user.is_authenticated and current_user.get_type() != '3' %}
+            <li><a class="nav-link" href="upload" aria-selected="false"><i class="fa fa-fw fa-upload"></i> Upload</a></li>
+            {% endif %}
+
+            <li><a class="nav-link" href="pics"><i class="fa fa-fw fa-picture-o"></i> Pictures</a></li>
+            {% if current_user.is_authenticated  %}
+                <li><a class="nav-link" href="logout" aria-selected="false"><i class="fa fa-fw fa-sign-out"></i> Logout</a></li>
+            {% else %}
+                <li><a class="nav-link" href="login" aria-selected="false"><i class="fa fa-fw fa-sign-in"></i> Login</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+
+    <!--
+        <div id="myNavbar" class="collapse navbar-collapse">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" href="home"><i class="fa fa-fw fa-home"></i> Home</a>
+                <a class="nav-link" href="about"><i class="fa fa-fw fa-info"></i> About</a>
+                <a class="nav-link" href="announcs"><i class="fa fa-fw fa-bullhorn"></i> Announcements</a>
+                <a class="nav-link" href="docs"><i class="fa fa-fw fa-book"></i> Documents</a>
+
+                {% if (current_user.is_authenticated and current_user.get_type() != 3) %}
+                    <a class="nav-link" href="upload" aria-selected="false"><i class="fa fa-fw fa-upload"></i> Upload</a>
+                {% endif %}
+
+                <a class="nav-link" href="blog"><i class="fa fa-fw fa-pencil-square-o"></i> Blog</a>
+                <a class="nav-link" href="pics"><i class="fa fa-fw fa-picture-o"></i> Pictures</a>
+                {% if current_user.is_authenticated  %}
+                    <a class="nav-link" href="logout" aria-selected="false"><i class="fa fa-fw fa-sign-out"></i> Logout</a>
+                {% else %}
+                    <a class="nav-link" href="login" aria-selected="false"><i class="fa fa-fw fa-sign-in"></i> Login</a>
+                {% endif %}
+                this is how we do drop down menu      
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-fw fa-user"></i> Login</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="#">Admin</a>
+                        <a class="dropdown-item" href="#">Residents</a>
+                    </div>
+                    </div>
+            </div>
+        </div>
+    -->    
+
+    <div class="content">
+        {% include "mobile-menu.html" %}
+
+        <div class="section-title" data-aos="zoom-out">
+            <h2>Home</h2>
+        </div>
+        
+        <div class="container-md my-5">
+            <div class="center carousel shadow bg-white rounded">
+                <button class="btn btn-primary" style="margin: 15px; font-size: 30px;" type="button" data-toggle="collapse" data-target="#newresidentsid" aria-expanded="false" aria-controls="collapseExample">
+                  New Residents Must Click Here
+                </button>
+            
+                <div id="newresidentsid" class="collapse home-body">
+                  <ul style="text-align: left;">
+                    <li>If you haven't yet received the New Resident Welcome Package, contact your agent or a Board member</li>
+                    <li>The dumpster must not be used for excessive moving boxes, mattresses or renovation materials. This is enforced via fines as stated in the "rules and regulations" document. 
+                        For large amounts of junk, click <a href="https://www.nashuanh.gov/405/Four-Hills-Landfill">Nashua Dumpster</a> for the Nashua-NH city landfill</li>
+                    <li>Please do not allow moving trucks or contractor trucks to block the garage door</li>
+                    <li>Renovation work must be performed by licensed contractors, during the hours of 8am and 5pm</li>
+                    <li>Condo fees are mailed to 33 Spit Brook Rd, Nashua NH, 03060 (att. Treasurer)</li>
+                  </ul>
+                </div>
+            </div>
+
+            <div class="spacer"></div>
+
+            <div id="myCarousel" class="center carousel slide carousel-fade z-depth-1-half" data-interval="3000" data-ride="carousel">
+                <!-- Carousel indicators -->
+                <ol class="carousel-indicators">
+                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#myCarousel" data-slide-to="1"></li>
+                <li data-target="#myCarousel" data-slide-to="2"></li>
+                </ol>
+
+                <!-- <div class="shadow p-3 mb-5 bg-white rounded"> -->
+                <!-- Wrapper for carousel items -->
+            
+                <div class="carousel-inner shadow p-3 mb-5 bg-white rounded">
+                    <!--<div class="center">-->
+                        <div class="carousel-item active">
+                            <a href="pics/{{pics[0]}}" target="_blank">
+                                <div class="d-flex justify-content-center">
+                                    <img src="pics/{{pics[0]}}" alt="First slide">
+                                </div>    
+                            </a>
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5></h5>
+                            </div>
+                        </div>
+                    <!--</div>-->
+
+                    {% for pic in pics[1:]: %}
+                        <div class="carousel-item">
+                                <a href="pics/{{pic}}" target="_blank">
+                                    <div class="d-flex justify-content-center">
+                                        <img src="pics/{{pic}}" alt="First slide">
+                                    </div>    
+                                </a>
+                            <div class="carousel-caption d-none d-md-block">
+                                <h5></h5>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Carousel controls -->
+                <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </a>
+                <a class="carousel-control-next" href="#myCarousel" data-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </a>
+            </div> <!-- close carousel -->
+
+            <div class="spacer"></div>
+
+            <div class="center carousel shadow bg-white rounded">
+                <div class="home-body">
+                    <p>Hello everyone.</p>
+                    <div class="spacer"></div>
+                    Welcome to the beautiful Whitegate Condominium in Nashua, NH.
+                    <div class="spacer"></div>
+                    We can't wait to get you acquainted with our property and, at the same time,
+                    providing you with useful information.
+                    <div class="spacer"></div>
+                    If you're a resident, documents and information will be just a mouse click away.
+                </div>
+            </div>        
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

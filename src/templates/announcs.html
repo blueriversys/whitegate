@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<div class="main">
+
+  <nav id="sidebar">  
+    <div class="sidebar-logo-area">
+        <img class="logo-div" src="img/logo.jpg">
+        <button id="menuButtonClose" type="button" class="sidebar-close-btn init-hidden close" aria-label="Close">x</button>
+    </div>
+    <ul class="list-unstyled components">
+      <li><a class="nav-link" href="home"><i class="fa fa-fw fa-home"></i> Home</a></li>
+      <li><a class="nav-link" href="about"><i class="fa fa-fw fa-info"></i> About</a></li>
+      <li class="active"><a class="nav-link" href="announcs"><i class="fa fa-fw fa-bullhorn"></i> Announcements</a></li>
+      <li><a class="nav-link" href="docs"><i class="fa fa-fw fa-book"></i> Documents</a></li>
+
+      {% if current_user.is_authenticated and current_user.get_type() != '3' %}
+          <li><a class="nav-link" href="upload" aria-selected="false"><i class="fa fa-fw fa-upload"></i> Upload</a></li>
+      {% endif %}
+
+      <li><a class="nav-link" href="pics"><i class="fa fa-fw fa-picture-o"></i> Pictures</a></li>
+      {% if current_user.is_authenticated  %}
+          <li><a class="nav-link" href="logout" aria-selected="false"><i class="fa fa-fw fa-sign-out"></i> Logout</a></li>
+      {% else %}
+          <li><a class="nav-link" href="login" aria-selected="false"><i class="fa fa-fw fa-sign-in"></i> Login</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+ 
+  <div class="content">
+    {% include "mobile-menu.html" %}
+
+    <div class="section-title" data-aos="zoom-out">
+      <h2>Announcements</h2>
+    </div>
+
+    <div class="app-container">
+      <div class="row">
+          {% for announc in announcs %}
+              <div class="col-1 announc-col">
+                <a href="opendocs/announcs/{{announc}}" target="_blank">
+                  {% if announc.endswith('pdf') %}
+                    <img class="announc-img" src="img/pdf-format-red.png" alt=""> 
+                  {% elif announc.endswith('png') %}
+                    <img class="announc-img" src="img/png-format-blue-sm.png" alt=""> 
+                  {% elif announc.endswith('jpg') %}
+                    <img class="announc-img" src="img/jpg-format-green.png" alt=""> 
+                  {% else %}
+                    <img class="announc-img" src="img/file-format-orange.png" alt=""> 
+                  {% endif %}
+                </a>            
+
+                <div class="doc-link">
+                  <a href="opendocs/announcs/{{announc}}" target="_blank">{{announc}}</a>
+                </div>
+              </div>
+          {% endfor %}
+      </div>
+    </div>
+
+  </div>
+
+</div> <!-- close main -->
+{% endblock %}

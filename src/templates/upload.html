@@ -1,0 +1,452 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<div class="main">
+
+  <nav id="sidebar">  
+    <div class="sidebar-logo-area">
+        <img class="logo-div" src="img/logo.jpg">
+        <button id="menuButtonClose" type="button" class="sidebar-close-btn init-hidden close" aria-label="Close">x</button>
+    </div>
+    <ul class="list-unstyled components">
+      <li><a class="nav-link" href="home"><i class="fa fa-fw fa-home"></i> Home</a></li>
+      <li><a class="nav-link" href="about"><i class="fa fa-fw fa-info"></i> About</a></li>
+      <li><a class="nav-link" href="announcs"><i class="fa fa-fw fa-bullhorn"></i> Announcements</a></li>
+      <li><a class="nav-link" href="docs"><i class="fa fa-fw fa-book"></i> Documents</a></li>
+      <li class="active"><a class="nav-link" href="upload" aria-selected="false"><i class="fa fa-fw fa-upload"></i> Upload</a></li>
+      <li><a class="nav-link" href="pics"><i class="fa fa-fw fa-picture-o"></i> Pictures</a></li>
+      <li><a class="nav-link" href="logout" aria-selected="false"><i class="fa fa-fw fa-sign-out"></i> Logout</a></li>
+    </ul>
+  </nav>
+
+  <div class="content">
+      {% include "mobile-menu.html" %}
+
+      <div class="section-title" data-aos="zoom-out">
+        <h2>Upload documents and pictures</h2>
+      </div>
+
+      <p>
+
+      <div class="upload-container">
+
+        <div class="upload-block">
+          <p>Whitegate Project List</p>
+          <div class="upload-block-row">
+            <div class="col-1 upload-browse">
+              <a style="text-align: center; font-size: 16px;" href="https://docs.google.com/spreadsheets/d/10EwDvN541YQ71rMF2XzknX0GfMFtRjRH0vKsUQoB7kk/edit?usp=sharing" target="_blank">Click to edit the Whitegate Projects Spreadsheet</a>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="upload-block">
+          <p>Bylaws</p>
+          <div class="upload-block-row">
+                  <div class="col-1 upload-browse">
+                    <input id="bylaws" type="file"/>
+                    <button id="upload-button" onclick="uploadFile('bylaws')"> Upload a Bylaw</button>
+                  </div>
+          </div>
+        </div>
+
+        <p>
+
+        <div class="upload-block">
+          <p>Other Documents</p>
+          <div class="upload-block-row">
+                  <div class="col-1 upload-browse">
+                    <input id="otherdoc" type="file"/>
+                    <button id="upload-button" onclick="uploadFile('otherdoc')"> Upload a Document</button>
+                  </div>
+          </div>
+        </div>
+
+        <p>
+
+        <div class="upload-block">
+          <p>Announcement Document</p>
+          <div class="upload-block-row">
+                  <div class="col-1 upload-browse">
+                    <input id="announc" type="file"/>
+                    <button id="upload-button" onclick="uploadFile('announc')"> Upload an Announcement</button>
+                  </div>
+          </div>
+        </div>
+
+        <p>
+      
+        <div class="upload-block">
+          <p>Picture</p>
+          <div class="upload-block-row">
+                  <div class="col-1 upload-browse">
+                    <input id="picture" type="file"/>
+                    <button id="upload-button" onclick="uploadFile('picture')"> Upload a Picture</button>
+                  </div>
+          </div>
+        </div>
+
+        <p>
+
+        <div class="upload-block">
+          <p>Financial Statements - 2020</p>
+          <div class="upload-block-row">
+            <div class="col-1 upload-browse">
+              <input id="2020-01" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2020-01')"> Upload Jan-2020</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2020-02" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2020-02')"> Upload Feb-2020</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2020-03" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2020-03')"> Upload Mar-2020</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2020-04" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2020-04')"> Upload Apr-2020</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2020-05" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2020-05')"> Upload May-2020</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2020-06" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2020-06')"> Upload Jun-2020</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2020-07" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2020-07')"> Upload Jul-2020</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2020-08" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2020-08')"> Upload Aug-2020</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2020-09" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2020-09')"> Upload Sep-2020</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2020-10" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2020-10')"> Upload Oct-2020</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2020-11" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2020-11')"> Upload Nov-2020</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2020-12" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2020-12')"> Upload Dec-2020</button>
+            </div>
+          </div>
+        </div>
+
+        <p>
+
+        <div class="upload-block">
+          <p>Financial Statements - 2021</p>
+          <div class="upload-block-row">
+            <div class="col-1 upload-browse">
+              <input id="2021-01" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2021-01')"> Upload Jan-2021</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2021-02" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2021-02')"> Upload Feb-2021</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2021-03" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2021-03')"> Upload Mar-2021</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2021-04" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2021-04')"> Upload Apr-2021</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2021-05" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2021-05')"> Upload May-2021</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2021-06" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2021-06')"> Upload Jun-2021</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2021-07" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2021-07')"> Upload Jul-2021</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2021-08" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2021-08')"> Upload Aug-2021</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2021-09" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2021-09')"> Upload Sep-2021</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2021-10" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2021-10')"> Upload Oct-2021</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2021-11" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2021-11')"> Upload Nov-2021</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2021-12" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2021-12')"> Upload Dec-2021</button>
+            </div>
+          </div>
+        </div>
+
+        <p>
+
+        <div class="upload-block">
+          <p>Financial Statements - 2022</p>
+          <div class="upload-block-row">
+            <div class="col-1 upload-browse">
+              <input id="2022-01" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2022-01')"> Upload Jan-2022</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2022-02" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2022-02')"> Upload Feb-2022</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2022-03" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2022-03')"> Upload Mar-2022</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2022-04" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2022-04')"> Upload Apr-2022</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2022-05" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2022-05')"> Upload May-2022</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2022-06" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2022-06')"> Upload Jun-2022</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2022-07" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2022-07')"> Upload Jul-2022</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2022-08" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2022-08')"> Upload Aug-2022</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2022-09" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2022-09')"> Upload Sep-2022</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2022-10" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2022-10')"> Upload Oct-2022</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2022-11" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2022-11')"> Upload Nov-2022</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2022-12" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2022-12')"> Upload Dec-2022</button>
+            </div>
+          </div>
+        </div>
+  
+      </div>
+
+      <p class="spacer"></p>
+
+      <button class="btn btn-primary center" type="button" data-toggle="collapse" data-target="#user_maint_section" aria-expanded="false" aria-controls="collapseExample">
+        Click Here to Open/Close the User Maintenance Section
+      </button>
+
+      <p class="spacer"></p>
+
+      <div class="app-container collapse" id="user_maint_section">
+        <div class="card card-body">
+          <div class="center">
+            <button class="btn-primary" id="get-all-residents-button" onclick="retrieveUsers()">Get All Residents</button>
+          </div>
+
+          <div class="table-div" style="height: 400px;">
+              <table class="table table-sm" id="residentstableid">
+                  <tr>
+                      <th style="width: 5%;">Unit</th>
+                      <th style="width: 8%;">User Id</th>
+                      <th style="width: 8%;">Password</th>
+                      <th style="width: 15%;">Last Name</th>
+                      <th style="width: 15%;">Name</th>
+                      <th style="width: 15%;">Email</th>
+                      <th style="width: 10%;">Start Date</th>
+                      <th style="width: 10%;">Phone</th>
+                  </tr>
+              </table>
+          </div>
+
+          <p></p>
+          <p></p>
+
+          <div class="upload-block">
+            <div class="passrow">
+              <div class="aright">Unit:</div>
+              <div class="aleft">
+                <select id="unitid" name="units" onchange="retrieveUserByUnit();">
+                  <option value="0">0</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                  <option value="13">13</option>
+                  <option value="14">14</option>
+                  <option value="15">15</option>
+                  <option value="16">16</option>
+                  <option value="17">17</option>
+                  <option value="18">18</option>
+                  <option value="19">19</option>
+                  <option value="20">20</option>
+                  <option value="21">21</option>
+                  <option value="22">22</option>
+                  <option value="23">23</option>
+                  <option value="24">24</option>
+                  <option value="25">25</option>
+                  <option value="26">26</option>
+                  <option value="27">27</option>
+                  <option value="28">28</option>
+                  <option value="29">29</option>
+                  <option value="30">30</option>
+                  <option value="31">31</option>
+                  <option value="32">32</option>
+                  <option value="33">33</option>
+                  <option value="34">34</option>
+                  <option value="35">35</option>
+                  <option value="36">36</option>
+                  <option value="37">37</option>
+                  <option value="38">38</option>
+                  <option value="39">39</option>
+                  <option value="40">40</option>
+                  <option value="41">41</option>
+                  <option value="42">42</option>
+                  <option value="43">43</option>
+                  <option value="44">44</option>
+                  <option value="45">45</option>
+                  <option value="46">46</option>
+                  <option value="47">47</option>
+                  <option value="48">48</option>
+                  <option value="49">49</option>
+                  <option value="50">50</option>
+                  <option value="51">51</option>
+                  <option value="52">52</option>
+                  <option value="53">53</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="passrow">
+              <div class="aright">User Id:</div>
+              <div class="aleft"> <input id="userid" placeholder="user id"></input></div>
+              <button type="button-div" id="retrievebtn" onClick="retrieveUserByUserId();">Retrieve</button>
+            </div>
+            <div class="passrow">
+              <div class="aright">Last Name:</div>
+              <div class="aleft"> <input id="lastname" placeholder="last name"></input></div>
+            </div>
+            <div class="passrow">
+              <div class="aright">Name:</div>
+              <div class="aleft"> <input id="name" placeholder="first name"></input></div>
+            </div>
+            <div class="passrow">
+              <div class="aright">Email:</div>
+              <div class="aleft"> <input id="email" placeholder="email address"></input></div>
+            </div>
+            <div class="passrow">
+              <div class="aright">Start Date:</div>
+              <div class="aleft"> <input id="startdt" placeholder="resident since when"></input></div>
+            </div>
+            <div class="passrow">
+              <div class="aright">Phone:</div>
+              <div class="aleft"> <input id="phone" placeholder="phone"></input></div>
+            </div>
+
+            <div class="passrow">
+              <div class="aright">Type:</div>
+              <div class="aleft"> 
+                <select id="type" name="type">
+                  <option value="0">Admin</option>
+                  <option value="1">Board Member</option>
+                  <option value="2">Secretary</option>
+                  <option value="3" selected>Resident</option>
+                </select>  
+              </div>
+            </div>
+
+            <div class="center">
+              <button class="button-div wide" id="savebtn" onClick="saveUser();">Save</button>
+              <button class="button-div wide" id="sendinfobtn" onClick="startSendEmail();">Send Login Email to User</button>
+            </div>   
+          </div>
+        </div>
+        <p class="spacer"></p>
+        <p class="spacer"></p>
+      </div> <!-- close app-container -->
+
+      <button class="btn btn-primary center" type="button" data-toggle="collapse" data-target="#bulk_email_section" aria-expanded="false" aria-controls="collapseExample">
+        Click Here to Open/Close the Bulk Email Section
+      </button>
+
+<!--      <div class="announc-outer-box collapse" id="bulk_email_section"> -->
+      <div class="app-container collapse" id="bulk_email_section">
+        <p class="spacer"></p>
+        <div class="card card-body">
+          <div class="announc-instr">
+              The form below is <b>optional</b>.
+              It should be used only when you want to send an email message to all registered
+              residents after an upload is made.
+          </div>
+          <p>
+              <div class="announc-box">
+
+                  <div class="inputboxline">
+                    <div class="inputcaptionbox">
+                      <div class="inputcaptioncontent">Email Title:</div>
+                    </div>
+
+                    <div class="inputcontrolbox">
+                      <div class="inputcontrolcontent">
+                        <input id="titlefield_id" name="emailtitlefield"></input>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="textareaboxline">
+                    <div class="inputcaptionbox">
+                      <div class="inputcaptioncontent">Email Text:</div>
+                    </div>
+                    <div class="inputcontrolbox">
+                      <div class="inputcontrolcontent">
+                          <textarea id="emailtextfield_id" name="emailbodyfield" rows="10"></textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="buttonbox">
+                    <div class="innerbuttonbox">
+                        <button id="emailbutton_id" onClick="sendBulkEmail();">Send email to all residents</button>
+                      </div>  
+                  </div>
+              
+              </div>  
+        </div> <!-- close card-body -->
+      </div> <!-- close app-container -->
+  </div> <!-- closes content -->
+</div> <!-- closes main -->
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<div class="main">
+
+  <nav id="sidebar">  
+    <div class="sidebar-logo-area">
+        <img class="logo-div" src="img/logo.jpg">
+        <button id="menuButtonClose" type="button" class="sidebar-close-btn init-hidden close" aria-label="Close">x</button>
+    </div>
+    <ul class="list-unstyled components">
+        <li><a class="nav-link" href="home"><i class="fa fa-fw fa-home"></i> Home</a></li>
+        <li><a class="nav-link" href="about"><i class="fa fa-fw fa-info"></i> About</a></li>
+        <li><a class="nav-link" href="announcs"><i class="fa fa-fw fa-bullhorn"></i> Announcements</a></li>
+        <li><a class="nav-link" href="docs"><i class="fa fa-fw fa-book"></i> Documents</a></li>
+
+        {% if (current_user.is_authenticated and current_user.get_type() != 3) %}
+        <li><a class="nav-link" href="upload" aria-selected="false"><i class="fa fa-fw fa-upload"></i> Upload</a></li>
+        {% endif %}
+
+        <li class="active"><a class="nav-link" href="blog"><i class="fa fa-fw fa-pencil-square-o"></i> Blog</a></li>
+        <li><a class="nav-link" href="pics"><i class="fa fa-fw fa-picture-o"></i> Pictures</a></li>
+        {% if current_user.is_authenticated  %}
+            <li><a class="nav-link" href="logout" aria-selected="false"><i class="fa fa-fw fa-sign-out"></i> Logout</a></li>
+        {% else %}
+            <li><a class="nav-link" href="login" aria-selected="false"><i class="fa fa-fw fa-sign-in"></i> Login</a></li>
+        {% endif %}
+    </ul>
+  </nav>
+
+  <div class="content">
+    {% include "mobile-menu.html" %}
+
+    <div class="section-title" data-aos="zoom-out">
+      <h2>Blog</h2>
+    </div>
+
+    <div class="about-style">
+      <div class="center shadow bg-white rounded">
+          <div class="about-body">
+            <p>Talking and more talking</p>
+            
+            We plan to place right in this section links to various articles
+            with tips and tricks on various subjects, especially those 
+            about attaining and keep your unit in tip top shape for all seasons.
+            
+            <div class="spacer"></div>
+            <div class="spacer"></div>
+            We'll keep you posted.    
+          </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}

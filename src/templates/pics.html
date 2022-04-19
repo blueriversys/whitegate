@@ -1,0 +1,154 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<div class="main">
+
+  <nav id="sidebar">  
+    <div class="sidebar-logo-area">
+        <img class="logo-div" src="img/logo.jpg">
+        <button id="menuButtonClose" type="button" class="sidebar-close-btn init-hidden close" aria-label="Close">x</button>
+    </div>
+    <ul class="list-unstyled components">
+      <li><a class="nav-link" href="home"><i class="fa fa-fw fa-home"></i> Home</a></li>
+      <li><a class="nav-link" href="about"><i class="fa fa-fw fa-info"></i> About</a></li>
+      <li><a class="nav-link" href="announcs"><i class="fa fa-fw fa-bullhorn"></i> Announcements</a></li>
+      <li><a class="nav-link" href="docs"><i class="fa fa-fw fa-book"></i> Documents</a></li>
+
+      {% if current_user.is_authenticated and current_user.get_type() != '3' %}
+          <li><a class="nav-link" href="upload" aria-selected="false"><i class="fa fa-fw fa-upload"></i> Upload</a></li>
+      {% endif %}
+
+      <li class="active"><a class="nav-link" href="pics"><i class="fa fa-fw fa-picture-o"></i> Pictures</a></li>
+      {% if current_user.is_authenticated  %}
+          <li><a class="nav-link" href="logout" aria-selected="false"><i class="fa fa-fw fa-sign-out"></i> Logout</a></li>
+      {% else %}
+          <li><a class="nav-link" href="login" aria-selected="false"><i class="fa fa-fw fa-sign-in"></i> Login</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+
+  <div class="content">
+
+    {% include "mobile-menu.html" %}
+
+    <div class="section-title" data-aos="zoom-out">
+      <h2>Pictures</h2>
+    </div>
+
+    <div class="container">
+      <div class="carousel-container position-relative row">
+        
+          <!-- Sorry! Lightbox doesn't work - yet. -->
+          <div id="myCarousel" class="center carousel slide shadow p-3 mb-5 bg-white rounded" data-ride="carousel">  
+            <div class="carousel-inner shadow">
+              <div class="carousel-item active" data-slide-number="0">
+                <img src="pics/4743442_1_2.jpg" class="d-block w-100" alt="..." data-remote="https://source.unsplash.com/Pn6iimgM-wo/" data-type="image" data-toggle="lightbox" data-gallery="example-gallery">
+              </div>
+              <div class="carousel-item" data-slide-number="1">
+                <img src="pics/4743442_2.jpg" class="d-block w-100" alt="..." data-remote="https://source.unsplash.com/tXqVe7oO-go/" data-type="image" data-toggle="lightbox" data-gallery="example-gallery">
+              </div>
+              <div class="carousel-item" data-slide-number="2">
+                <img src="pics/4743442_3_2.jpg" class="d-block w-100" alt="..." data-remote="https://source.unsplash.com/tXqVe7oO-go/" data-type="image" data-toggle="lightbox" data-gallery="example-gallery">
+              </div>
+              <div class="carousel-item" data-slide-number="3">
+                <img src="pics/4743442_6_2.jpg" class="d-block w-100" alt="..." data-remote="https://source.unsplash.com/tXqVe7oO-go/" data-type="image" data-toggle="lightbox" data-gallery="example-gallery">
+              </div>
+            </div>
+          </div>
+      </div>
+
+      <!-- Carousel Navigation 
+      <div id="carousel-thumbs" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="row mx-0">
+              <div id="carousel-selector-0" class="thumb col-4 col-sm-2 px-1 py-2 selected" data-target="#myCarousel" data-slide-to="0">
+                <img src="https://source.unsplash.com/Pn6iimgM-wo/600x400/" class="img-fluid" alt="...">
+              </div>
+              <div id="carousel-selector-1" class="thumb col-4 col-sm-2 px-1 py-2" data-target="#myCarousel" data-slide-to="1">
+                <img src="https://source.unsplash.com/tXqVe7oO-go/600x400/" class="img-fluid" alt="...">
+              </div>
+              <div id="carousel-selector-2" class="thumb col-4 col-sm-2 px-1 py-2" data-target="#myCarousel" data-slide-to="2">
+                <img src="https://source.unsplash.com/qlYQb7B9vog/600x400/" class="img-fluid" alt="...">
+              </div>
+              <div id="carousel-selector-3" class="thumb col-4 col-sm-2 px-1 py-2" data-target="#myCarousel" data-slide-to="3">
+                <img src="https://source.unsplash.com/QfEfkWk1Uhk/600x400/" class="img-fluid" alt="...">
+              </div>
+              <div id="carousel-selector-4" class="thumb col-4 col-sm-2 px-1 py-2" data-target="#myCarousel" data-slide-to="4">
+                <img src="https://source.unsplash.com/CSIcgaLiFO0/600x400/" class="img-fluid" alt="...">
+              </div>
+              <div id="carousel-selector-5" class="thumb col-4 col-sm-2 px-1 py-2" data-target="#myCarousel" data-slide-to="5">
+                <img src="https://source.unsplash.com/a_xa7RUKzdc/600x400/" class="img-fluid" alt="...">
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="row mx-0">
+              <div id="carousel-selector-6" class="thumb col-4 col-sm-2 px-1 py-2" data-target="#myCarousel" data-slide-to="6">
+                <img src="https://source.unsplash.com/uanoYn1AmPs/600x400/" class="img-fluid" alt="...">
+              </div>
+              <div id="carousel-selector-7" class="thumb col-4 col-sm-2 px-1 py-2" data-target="#myCarousel" data-slide-to="7">
+                <img src="https://source.unsplash.com/_snqARKTgoc/600x400/" class="img-fluid" alt="...">
+              </div>
+              <div id="carousel-selector-8" class="thumb col-4 col-sm-2 px-1 py-2" data-target="#myCarousel" data-slide-to="8">
+                <img src="https://source.unsplash.com/M9F8VR0jEPM/600x400/" class="img-fluid" alt="...">
+              </div>
+              <div id="carousel-selector-9" class="thumb col-4 col-sm-2 px-1 py-2" data-target="#myCarousel" data-slide-to="9">
+                <img src="https://source.unsplash.com/Q1p7bh3SHj8/600x400/" class="img-fluid" alt="...">
+              </div>
+              <div class="col-2 px-1 py-2"></div>
+              <div class="col-2 px-1 py-2"></div>
+            </div>
+          </div>
+        </div>
+      -->
+
+  <!--    
+        <a class="carousel-control-prev" href="#carousel-thumbs" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carousel-thumbs" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+  -->
+
+        <div class="row">
+          {% for pic in pics: %}
+              <div class="col-lg-3 col-md-4 p-3 mb-4 bg-white center shadow rounded d-flex align-items-stretch">  
+                      <div class="member-img">
+                          <a href="pics/{{pic}}" _target="blank">   
+                              <img src="pics/{{pic}}" class="img-fluid" alt="">
+                          </a>
+                      </div>
+              </div>
+              <div style="margin: 1px;"></div>
+              {% endfor %}
+        </div>
+    </div> <!-- /container -->  
+  </div> <!-- closes content -->  
+
+<!--  
+  <section id="team" class="team">
+    <div class="row">
+      {% for pic in pics: %}
+        <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
+          <div class="member" data-aos="fade-up">
+              <div class="member-img">
+                <a href="pics/{{pic}}" _target="blank">
+                  <img src="pics/{{pic}}" class="img-fluid" alt="">
+                </a>
+              </div>
+              <div class="member-info">
+                <span>description goes here</span>
+              </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+-->
+
+</div> <!-- close main --> 
+{% endblock %}

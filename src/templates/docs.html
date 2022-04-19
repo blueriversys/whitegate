@@ -1,0 +1,128 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<div class="main">
+
+    <nav id="sidebar">  
+        <div class="sidebar-logo-area">
+            <img class="logo-div" src="img/logo.jpg">
+            <button id="menuButtonClose" type="button" class="sidebar-close-btn init-hidden close" aria-label="Close">x</button>
+        </div>
+
+        <ul class="list-unstyled components">
+          <li><a class="nav-link" href="home"><i class="fa fa-fw fa-home"></i> Home</a></li>
+          <li><a class="nav-link" href="about"><i class="fa fa-fw fa-info"></i> About</a></li>
+          <li><a class="nav-link" href="announcs"><i class="fa fa-fw fa-bullhorn"></i> Announcements</a></li>
+          <li class="active"><a class="nav-link" href="docs"><i class="fa fa-fw fa-book"></i> Documents</a></li>
+    
+          {% if current_user.is_authenticated and current_user.get_type() != '3' %}
+              <li><a class="nav-link" href="upload" aria-selected="false"><i class="fa fa-fw fa-upload"></i> Upload</a></li>
+          {% endif %}
+    
+          <li><a class="nav-link" href="pics"><i class="fa fa-fw fa-picture-o"></i> Pictures</a></li>
+          {% if current_user.is_authenticated  %}
+              <li><a class="nav-link" href="logout" aria-selected="false"><i class="fa fa-fw fa-sign-out"></i> Logout</a></li>
+          {% else %}
+              <li><a class="nav-link" href="login" aria-selected="false"><i class="fa fa-fw fa-sign-in"></i> Login</a></li>
+          {% endif %}
+        </ul>
+    </nav>
+    
+
+    <div class="content">
+        {% include "mobile-menu.html" %}
+
+        <div class="section-title" data-aos="zoom-out">
+            <h2>View Documents</h2>
+        </div>
+        
+        <div class="spacer"></div>
+        <p>Click a document below to open it on a second tab.</p>
+        <p>
+        <h1>Bylaws</h1>
+        <div class="app-container">
+            <div class="row">
+                {% for doc in bylaws %}
+                    <div class="col-1 doc-col">
+                        <a class="doc-link" href="docs/bylaws/{{doc}}" target="_blank"> {{doc}}</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+
+        <div class="spacer"></div>
+        <div class="spacer"></div>
+
+        <p>
+        <h1>Other Documents</h1>
+        <div class="app-container">
+            <div class="row">
+                {% for doc in otherdocs %}
+                    <div class="col-1 doc-col">
+                        <a class="doc-link" href="docs/other/{{doc}}" target="_blank"> {{doc}}</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="spacer"></div>
+        <div class="spacer"></div>
+
+        <p>
+        <h1>Financial Statements</h1>
+        <h2>2020</h2>
+
+        <div class="app-container">
+            <div class="row">
+                {% for doc in findocs2020 %}
+                    <div class="col-1 doc-col">
+                        <a class="doc-link" href="docs/financial/{{doc}}" target="_blank"> {{doc}}</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    
+        
+
+        <div class="spacer"></div>
+        <div class="spacer"></div>
+        <div class="spacer"></div>
+
+        <h1>Financial Statements</h1>
+        <h2>2021</h2>
+
+        <div class="app-container">
+            <div class="row">
+                {% for doc in findocs2021 %}
+                    <div class="col-1 doc-col">
+                        <a class="doc-link" href="docs/financial/{{doc}}" target="_blank"> {{doc}}</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+
+        <div class="spacer"></div>
+        <div class="spacer"></div>
+        <div class="spacer"></div>
+
+        <h1>Financial Statements</h1>
+        <h2>2022</h2>
+
+        <div class="app-container">
+            <div class="row">
+                {% for doc in findocs2022 %}
+                    <div class="col-1 doc-col">
+                        <a class="doc-link" href="docs/financial/{{doc}}" target="_blank"> {{doc}}</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+
+
+</div> <!-- closes main -->
+
+{% endblock %}
