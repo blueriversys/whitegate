@@ -12,7 +12,7 @@ To run the server program:
 '''
 from users import users_repository
 from users import User
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 from flask import Flask, request, session, abort, redirect, Response, url_for, render_template, send_from_directory, flash
 from flask_login import LoginManager, login_required, UserMixin, login_user, logout_user, current_user
@@ -40,11 +40,11 @@ app = Flask(
             template_folder='templates'
            )
 
-app.config['SECRET_KEY'] = 'secret_key'
+app.config['SECRET_KEY'] = 'secret@whitegate#key'
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 login_manager.refresh_view = 'login'
-login_manager.needs_refresh_message = (u'Session timedout, please login again')
+login_manager.needs_refresh_message = (u'Due to inactivity, you have been logged out. Please login again')
 login_manager.needs_refresh_message_category = 'info'
 
 
@@ -53,6 +53,7 @@ WHITEGATE_NAME = 'Whitegate Condo'
 GMAIL_WHITEGATE_EMAIL = 'whitegatecondoinfo@gmail.com'
 SERVER_FOLDER = 'serverfiles'
 RESIDENTS_DB = SERVER_FOLDER + "/" + "residents.json"
+LOG_FILE = SERVER_FOLDER + "/" + "whitegate.log"
 
 cgitb.enable()
 
@@ -77,6 +78,14 @@ with open(RESIDENTS_DB, 'r') as f:
         )
         users_repository.add_user_to_dict(user)
 
+def log(msg):
+    timestamp = get_timestamp()
+    with open(LOG_FILE, "a") as f:
+        f.write(f'{timestamp} {msg}\n')
+        f.close()
+
+def get_timestamp():
+    return datetime.now().strftime("[%Y-%m-%d %H:%M:%S]")
 
 @app.route('/docs/<path:filename>')
 @login_required
@@ -197,7 +206,8 @@ def get_all_emails():
         email = user.email.strip()
         if len(email):
             all_emails.append(email)
-    print(f'all emails {all_emails}')
+    msg = f'all emails {all_emails}'        
+    log(msg)
     return all_emails
 
 @app.route('/home')
@@ -437,7 +447,8 @@ def login():
 
         if registeredUser.password == password:
             #print('Login successful: user %s , password %s' % (registeredUser.username, registeredUser.password))
-            print(f'user {registeredUser.username} logged in')
+            msg = f'user {registeredUser.username} logged in'
+            log(msg)
             login_user(registeredUser)
             return redirect(next_page)
         else:
@@ -470,7 +481,8 @@ def logout():
     if not current_user.is_authenticated:
         return redirect(url_for('home'))
 
-    print(f'user id {current_user.id}, {current_user.username} logged out')
+    msg = f'user id {current_user.id}, {current_user.username} logged out'
+    log(msg)
     username = current_user.username # we need to save the username BEFORE invoking logout_user()
     logout_user()
     return render_template("logout.html", loggedout_user=username)
@@ -490,7 +502,7 @@ def page_not_found(e):
 
 @app.before_request
 def before_request():
-    session.permanent = True
+    session.permanent = True # doesn't destroy the session when the browser window is closed
     app.permanent_session_lifetime = timedelta(hours=2)
     session.modified = True  # resets the session timeout timer
 
@@ -500,7 +512,8 @@ def before_request():
 def load_user(userid):
     user = users_repository.get_user_by_id(userid)
     login_user(user)
-    print(f'load_user(): userid {userid}, username {user.username}, authenticated {current_user.is_authenticated}, type {current_user.get_type()}') 
+    msg = f'load_user(): userid {userid}, username {user.username}, authenticated {current_user.is_authenticated}, type {current_user.get_type()}'
+    log(msg) 
     return user
 
 
