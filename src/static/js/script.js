@@ -375,3 +375,35 @@ function populateTable(json) {
   }    
 }
 
+function saveAnnouncs() {
+  var announcs = document.getElementById("announctextfield_id").value;
+  var request = new XMLHttpRequest();
+  request.open('POST', '/saveannouncs', true)
+
+  var requestObj = new Object();
+  requestObj.lines = announcs;
+  jsonStr = '{ "announc": ' + JSON.stringify(requestObj) + '}';
+  request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  request.send(jsonStr);
+  
+  request.onload = function () {
+    // Begin accessing JSON data here
+    var json = JSON.parse(this.response);
+    
+    if (request.status >= 200 && request.status < 400) {
+        if (json.response.status == 'success') {
+            alert('Announcements have been saved.');
+            return;
+        }
+        else {
+            alert('There was a problem trying to save the announcements.');
+            return;
+        }
+    } 
+    else {
+        alert('Error saving the announcements.');
+        return;
+    }
+  }    
+
+}

@@ -53,6 +53,7 @@ WHITEGATE_NAME = 'Whitegate Condo'
 GMAIL_WHITEGATE_EMAIL = 'whitegatecondoinfo@gmail.com'
 SERVER_FOLDER = 'serverfiles'
 RESIDENTS_DB = SERVER_FOLDER + "/" + "residents.json"
+ANNOUNCS_FILE = SERVER_FOLDER + "/" + "announcs.dat"
 LOG_FILE = SERVER_FOLDER + "/" + "whitegate.log"
 
 cgitb.enable()
@@ -242,10 +243,40 @@ def home():
 def about():
     return render_template("about.html")
 
+@app.route('/getannouncs')
+def get_announc_list():
+    announc_list = []
+    with open(ANNOUNCS_FILE, 'r') as f:
+        announc = ''
+        for index, line in enumerate(f):
+            if len(line.strip()):
+                announc = announc + line
+            else:
+                if len(announc.strip()):    
+                    announc_list.append(announc)
+                    announc = ''
+
+    # append the last block of announc lines
+    if len(announc.strip()):    
+        announc_list.append(announc)
+
+    json_obj = {'announcs':announc_list}
+    return json.dumps(json_obj)
+
+@app.route('/saveannouncs', methods=["POST"])
+def save_announc_list():
+    announcsObj = request.get_json()
+    announcs = announcsObj['announc']['lines']
+    with open(ANNOUNCS_FILE, 'w') as f:
+        f.write(announcs)
+        f.close()
+
+    return_obj = {'status' : 'success'}
+    return json.dumps({'response' : return_obj})
+
 @app.route('/announcs')
 def announcs():
-    announc_list = get_files(app.static_folder + '/opendocs/announcs', '')
-    return render_template("announcs.html", announcs=announc_list)
+    return render_template("announcs.html")
 
 @app.route('/docs')
 @login_required
@@ -404,7 +435,7 @@ def upload():
         filename = filename.replace(' ', '-')
         fullpath = '' 
         if uploaded_convname == 'announc':
-            fullpath = app.static_folder + '/docs/announcs/' + filename 
+            fullpath = app.static_folder + '/opendocs/announcs/' + filename 
         elif uploaded_convname == 'bylaws':
             fullpath = app.static_folder + '/docs/bylaws/' + filename 
         elif uploaded_convname == 'otherdoc':

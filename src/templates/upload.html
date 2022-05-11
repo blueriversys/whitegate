@@ -258,6 +258,41 @@
 
       <p class="spacer"></p>
 
+
+      
+      <button class="btn btn-primary center" type="button" data-toggle="collapse" data-target="#announc_maint_section" aria-expanded="false" aria-controls="collapseExample">
+        Click Here to Open/Close the Announcement Maintenance Section
+      </button>
+
+      <div class="app-container collapse" id="announc_maint_section">
+        <p class="spacer"></p>
+        <div class="card card-body">
+
+          <div class="announc-bullets">
+            <ul>
+              <li>To <b>add an announcement</b>: type the text at the top of the box below.</li>
+              <li>The most recent announcement appears first in the list.</li>
+              <li>Each announcement is separated by a blank line.</li>
+              <li>To <b>delete an announcement</b>: delete the corresponding line(s) from the box below.</li>
+            </ul>
+          </div>
+
+          <div class="announcs-div">
+              <textarea style="width: 100%;" id="announctextfield_id" name="announcbodyfield" rows="12"></textarea>
+          </div>
+
+          <div class="buttonbox">
+            <div class="innerbuttonbox">
+                <button id="emailbutton_id" onClick="saveAnnouncs();">Save Announcements</button>
+            </div>  
+          </div>
+
+        </div> <!-- close card-body -->
+      </div> <!-- close app-container -->
+
+      <p class="spacer"></p>
+
+
       <button class="btn btn-primary center" type="button" data-toggle="collapse" data-target="#user_maint_section" aria-expanded="false" aria-controls="collapseExample">
         Click Here to Open/Close the User Maintenance Section
       </button>
@@ -449,4 +484,8 @@
       </div> <!-- close app-container -->
   </div> <!-- closes content -->
 </div> <!-- closes main -->
+{% endblock %}
+
+{% block afterbody %}
+   <script src="{{ url_for('static', filename='js/upload.js') }}"></script>
 {% endblock %}

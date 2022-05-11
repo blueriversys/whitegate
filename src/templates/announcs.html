@@ -38,31 +38,20 @@
       <h2>Announcements</h2>
     </div>
 
+    <p class="spacer"></p>
+        
     <div class="app-container">
-      <div class="row">
-          {% for announc in announcs %}
-              <div class="col-1 announc-col">
-                <a href="opendocs/announcs/{{announc}}" target="_blank">
-                  {% if announc.endswith('pdf') %}
-                    <img class="announc-img" src="img/pdf-format-red.png" alt=""> 
-                  {% elif announc.endswith('png') %}
-                    <img class="announc-img" src="img/png-format-blue-sm.png" alt=""> 
-                  {% elif announc.endswith('jpg') %}
-                    <img class="announc-img" src="img/jpg-format-green.png" alt=""> 
-                  {% else %}
-                    <img class="announc-img" src="img/file-format-orange.png" alt=""> 
-                  {% endif %}
-                </a>            
-
-                <div class="doc-link">
-                  <a href="opendocs/announcs/{{announc}}" target="_blank">{{announc}}</a>
-                </div>
-              </div>
-          {% endfor %}
-      </div>
+          <ul id="announc-list"></ul> 
     </div>
 
   </div>
 
+     
 </div> <!-- close main -->
+
 {% endblock %}
+
+{% block afterbody %}
+   <script src="{{ url_for('static', filename='js/announc.js') }}"></script>
+{% endblock %}
+

@@ -76,6 +76,12 @@
   border-radius: 6px;
 }
 
+.announcs-div {
+  width: auto; 
+  height: 280px;
+  overflow-y: auto;
+}
+
 
 table {
   border-collapse: collapse;
@@ -105,6 +111,10 @@ tr:first-child {
 th {
   background-color: #04AA6D;
   color: white;
+}
+
+li:not(:last-child) {
+  margin-bottom: 8px;
 }
 
 
@@ -517,6 +527,11 @@ a[data-toggle="collapse"] {
 .announc-instr {
   padding: 0px;
   color: var(--email-caption-color);
+}
+
+div.announc-bullets li {
+  font-size: 12px;
+  margin-bottom: 0px;
 }
 
 .announc-box {
