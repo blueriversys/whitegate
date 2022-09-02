@@ -1,6 +1,7 @@
-'''
+"""
    Defines classses and variables related to the handling of users.
-'''
+"""
+
 import os
 import json
 from flask_login import UserMixin
@@ -11,25 +12,6 @@ USER_TYPE_BOARD = 1
 USER_TYPE_SECRETARY = 2
 USER_TYPE_RESIDENT = 3
 
-def dump_to_file(users):
-    with open("residents.json", 'w') as f:
-        userslist = []
-        for user in users.values():
-            record = {
-                'unit':user.unit, 
-                'userid':user.username, 
-                'password':user.password,
-                'lastname':user.lastname,
-                'name':user.name,
-                'email':user.email,
-                'startdt':user.startdt,
-                'phone':user.phone,
-                'type':user.type
-            }
-            userslist.append(record)
-        residents = {'residents':userslist}
-        jsonObj = json.dumps(residents)
-        f.write(jsonObj)
 
 class User(UserMixin):
     def __init__(self, unit, username, password, lastname, name, email, startdt, phone, id, type, active=True):
@@ -88,7 +70,6 @@ class UsersRepository:
     
     def save_user(self, user):
         self.unit_dict.setdefault(user.unit, user)
-        dump_to_file(self.unit_dict)
 
     def add_user_to_dict(self, user):
         self.unit_dict.setdefault(user.unit, user)
@@ -122,6 +103,27 @@ class UsersRepository:
     def next_index(self):
         self.identifier += 1
         return self.identifier
+
+    def save_users_to_file(self, filename):
+        with open(filename, 'w') as f:
+            userslist = []
+            for user in self.unit_dict.values():
+                record = {
+                    'unit': user.unit,
+                    'userid': user.username,
+                    'password': user.password,
+                    'lastname': user.lastname,
+                    'name': user.name,
+                    'email': user.email,
+                    'startdt': user.startdt,
+                    'phone': user.phone,
+                    'type': user.type
+                }
+                userslist.append(record)
+            residents = {'residents': userslist}
+            json_obj = json.dumps(residents)
+            f.write(json_obj)
+
 
 # define user repository
 users_repository = UsersRepository()

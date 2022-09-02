@@ -1,15 +1,16 @@
-'''
+"""
 https://towardsdatascience.com/virtual-environments-104c62d48c54
 
 How to set the virtual env:
-. python3 -m venv <virtual-env-folder>  (ex. python3 -m venv myvenv) 
+. python3 -m venv <virtual-env-folder>  (ex. python3 -m venv myvenv)
 . source myvenv/bin/activate (to activate)
 . pip install -r requirements.txt
 
 To run the server program:
 . python server.py  (no need to say python3)
 
-'''
+"""
+
 from users import users_repository
 from users import User
 from datetime import timedelta, datetime
@@ -79,11 +80,13 @@ with open(RESIDENTS_DB, 'r') as f:
         )
         users_repository.add_user_to_dict(user)
 
+
 def log(msg):
     timestamp = get_timestamp()
     with open(LOG_FILE, "a") as f:
         f.write(f'{timestamp} {msg}\n')
         f.close()
+
 
 def get_timestamp():
     return datetime.now().strftime("[%Y-%m-%d %H:%M:%S]")
@@ -101,6 +104,19 @@ def unprotected(filename):
 def index():
     return redirect(url_for('home'))
 
+@app.route('/deletefile', methods=['POST'])
+def delete_file():
+    file_obj = request.get_json()
+    filepath = file_obj['request']['filepath']
+    print(f'file to be deleted {filepath}')
+    try:
+        os.remove('static/'+filepath)
+        status = 'success'
+        log(f"username {current_user.username} deleted file {file_obj['request']['filename']}")
+    except OSError:
+        status = 'failure'
+    return_obj = {'status': status}
+    return json.dumps(return_obj)
 
 #------------------------------------------------------------
 # will send email to all residents, one by one
@@ -370,6 +386,7 @@ def get_resident_json():
     return_obj = {'response':resp_dict}
     return json.dumps(return_obj)
 
+
 def generate_password(userid):
     number = randint(1, 9999)
     if number < 10:
@@ -417,10 +434,15 @@ def save_resident_json():
         )
 #        print(f'delete before adding to db')
         users_repository.delete_user(user)
-    
+
+    # save this user in an internal structure
     users_repository.save_user(user)
-    return_obj = {'status' : 'success'}
-    return json.dumps({'response' : return_obj})
+
+    # save the entire list of users to a file
+    users_repository.save_users_to_file(RESIDENTS_DB)
+
+    return_obj = {'status': 'success'}
+    return json.dumps({'response': return_obj})
 
 @app.route('/upload', methods=['GET' , 'POST'])
 @login_required
@@ -428,7 +450,7 @@ def upload():
     if request.method == 'POST':
         uploaded_file = request.files['file']
         uploaded_convname = request.form['convname']
-#        print(f'size {uploaded_file.content_length}  file name received {uploaded_file.filename}  special name: {uploaded_convname}')
+        #print(f'size {uploaded_file.content_length}  file name received {uploaded_file.filename}  special name: {uploaded_convname}')
 
         filename = secure_filename(uploaded_file.filename)
         filename = filename.replace('_', '-')
@@ -448,8 +470,16 @@ def upload():
         uploaded_file.stream.seek(0)
         uploaded_file.save(fullpath) 
         return render_template("upload.html")     
-    else:    
-        return render_template("upload.html")
+    else:
+        docs2020 = get_files(app.static_folder + '/docs/financial', 'Fin-2020')
+        docs2021 = get_files(app.static_folder + '/docs/financial', 'Fin-2021')
+        docs2022 = get_files(app.static_folder + '/docs/financial', 'Fin-2022')
+        bylaws = get_files(app.static_folder + '/docs/bylaws', '')
+        otherdocs = get_files(app.static_folder + '/docs/other', '')
+        pics = get_files(app.static_folder + '/pics', '')
+        return render_template("upload.html", bylaws=bylaws, otherdocs=otherdocs, findocs2020=docs2020,
+                               findocs2021=docs2021, findocs2022=docs2022, pics=pics)
+
 
 @app.route('/pics')
 def pics():
@@ -514,7 +544,7 @@ def logout():
 
     msg = f'user id {current_user.id}, {current_user.username} logged out'
     log(msg)
-    username = current_user.username # we need to save the username BEFORE invoking logout_user()
+    username = current_user.username  # we need to save the username BEFORE invoking logout_user()
     logout_user()
     return render_template("logout.html", loggedout_user=username)
 

@@ -259,6 +259,95 @@
       <p class="spacer"></p>
 
 
+      <button class="btn btn-primary center" type="button" data-toggle="collapse" data-target="#deletion_maint_section" aria-expanded="false" aria-controls="collapseExample">
+        Click Here to Open/Close the File Deletion Section
+      </button>
+
+      <div class="app-container collapse" id="deletion_maint_section">
+        <p class="spacer"></p>
+
+        <div class="card card-body">
+
+          <h1>Bylaws Documents</h1>
+          <div class="app-container">
+              <div class="row">
+                  {% for doc in bylaws %}
+                      <div class="col-1 doc-col">
+                          {{doc}} <button id="deletebutton_id" onClick="deleteFile('docs/bylaws/{{doc}}','{{doc}}');">delete</button>
+                      </div>
+                  {% endfor %}
+              </div>
+          </div>
+          <p class="spacer"></p>
+
+          <h1>Other Documents</h1>
+          <div class="app-container">
+              <div class="row">
+                  {% for doc in otherdocs %}
+                      <div class="col-1 doc-col">
+                          {{doc}} <button id="deletebutton_id" onClick="deleteFile('docs/other/{{doc}}','{{doc}}');">delete</button>
+                      </div>
+                  {% endfor %}
+              </div>
+          </div>
+          <p class="spacer"></p>
+
+          <h1>Pictures</h1>
+          <div class="app-container">
+              <div class="row">
+                  {% for pic in pics %}
+                      <div class="col-1 doc-col">
+                          {{pic}} <button id="deletebutton_id" onClick="deleteFile('pics/{{pic}}','{{pic}}');">delete</button>
+                      </div>
+                  {% endfor %}
+              </div>
+          </div>
+          <p class="spacer"></p>
+
+          <h1>Financial Statements</h1>
+          <h2>2020</h2>
+          <div class="app-container">
+              <div class="row">
+                  {% for doc in findocs2020 %}
+                      <div class="col-1 doc-col">
+                          {{doc}} <button id="deletebutton_id" onClick="deleteFile('docs/financial/{{doc}}','{{doc}}');">delete</button>
+                      </div>
+                  {% endfor %}
+              </div>
+          </div>
+          <p class="spacer"></p>
+
+          <h1>Financial Statements</h1>
+          <h2>2021</h2>
+          <div class="app-container">
+              <div class="row">
+                  {% for doc in findocs2021 %}
+                      <div class="col-1 doc-col">
+                          {{doc}} <button id="deletebutton_id" onClick="deleteFile('docs/financial/{{doc}}','{{doc}}');">delete</button>
+                      </div>
+                  {% endfor %}
+              </div>
+          </div>
+          <p class="spacer"></p>
+
+          <h1>Financial Statements</h1>
+          <h2>2022</h2>
+          <div class="app-container">
+              <div class="row">
+                  {% for doc in findocs2022 %}
+                      <div class="col-1 doc-col">
+                          {{doc}} <button id="deletebutton_id" onClick="deleteFile('docs/financial/{{doc}}','{{doc}}');">delete</button>
+                      </div>
+                  {% endfor %}
+              </div>
+          </div>
+
+        </div> <!-- close card-body -->
+
+      </div> <!-- close app-container -->
+
+      <p class="spacer"></p>
+
       
       <button class="btn btn-primary center" type="button" data-toggle="collapse" data-target="#announc_maint_section" aria-expanded="false" aria-controls="collapseExample">
         Click Here to Open/Close the Announcement Maintenance Section
