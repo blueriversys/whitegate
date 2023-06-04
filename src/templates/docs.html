@@ -11,12 +11,13 @@
 
         <ul class="list-unstyled components">
           <li><a class="nav-link" href="home"><i class="fa fa-fw fa-home"></i> Home</a></li>
+          <li><a class="nav-link" href="profile"><i class="fa fa-fw fa-book"></i> My Profile</a></li>
           <li><a class="nav-link" href="about"><i class="fa fa-fw fa-info"></i> About</a></li>
           <li><a class="nav-link" href="announcs"><i class="fa fa-fw fa-bullhorn"></i> Announcements</a></li>
           <li class="active"><a class="nav-link" href="docs"><i class="fa fa-fw fa-book"></i> Documents</a></li>
     
           {% if current_user.is_authenticated and current_user.get_type() != '3' %}
-              <li><a class="nav-link" href="upload" aria-selected="false"><i class="fa fa-fw fa-upload"></i> Upload</a></li>
+              <li><a class="nav-link" href="upload" aria-selected="false"><i class="fa fa-fw fa-upload"></i> Maintenance</a></li>
           {% endif %}
     
           <li><a class="nav-link" href="pics"><i class="fa fa-fw fa-picture-o"></i> Pictures</a></li>
@@ -53,14 +54,29 @@
 
         <div class="spacer"></div>
         <div class="spacer"></div>
-
         <p>
+
         <h1>Other Documents</h1>
         <div class="app-container">
             <div class="row">
                 {% for doc in otherdocs %}
                     <div class="col-1 doc-col">
                         <a class="doc-link" href="docs/other/{{doc}}" target="_blank"> {{doc}}</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="spacer"></div>
+        <div class="spacer"></div>
+        <p>
+
+        <h1>Open View Documents</h1>
+        <div class="app-container">
+            <div class="row">
+                {% for doc in opendocs %}
+                    <div class="col-1 doc-col">
+                        <a class="doc-link" href="opendocs/files/{{doc}}" target="_blank"> {{doc}}</a>
                     </div>
                 {% endfor %}
             </div>
@@ -119,9 +135,26 @@
                 {% endfor %}
             </div>
         </div>
+
+        <div class="spacer"></div>
+        <div class="spacer"></div>
+        <div class="spacer"></div>
+
+        <h1>Financial Statements</h1>
+        <h2>2023</h2>
+
+        <div class="app-container">
+            <div class="row">
+                {% for doc in findocs2023 %}
+                    <div class="col-1 doc-col">
+                        <a class="doc-link" href="docs/financial/{{doc}}" target="_blank"> {{doc}}</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+
     </div>
-
-
 
 </div> <!-- closes main -->
 

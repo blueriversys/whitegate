@@ -1,0 +1,249 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<div class="main">
+
+  <nav id="sidebar">
+    <div class="sidebar-logo-area">
+        <img class="logo-div" src="img/logo.jpg">
+        <button id="menuButtonClose" type="button" class="sidebar-close-btn init-hidden close" aria-label="Close">x</button>
+    </div>
+    <ul class="list-unstyled components">
+      <li><a class="nav-link" href="home"><i class="fa fa-fw fa-home"></i> Home</a></li>
+      <li class="active"><a class="nav-link" href="profile"><i class="fa fa-fw fa-book"></i> My Profile</a></li>
+      <li><a class="nav-link" href="about"><i class="fa fa-fw fa-info"></i> About</a></li>
+      <li><a class="nav-link" href="announcs"><i class="fa fa-fw fa-bullhorn"></i> Announcements</a></li>
+      <li><a class="nav-link" href="docs"><i class="fa fa-fw fa-book"></i> Documents</a></li>
+
+      {% if current_user.is_authenticated and current_user.get_type() != '3' %}
+          <li><a class="nav-link" href="upload" aria-selected="false"><i class="fa fa-fw fa-upload"></i> Maintenance</a></li>
+      {% endif %}
+
+      <li><a class="nav-link" href="pics"><i class="fa fa-fw fa-picture-o"></i> Pictures</a></li>
+      <li><a class="nav-link" href="logout" aria-selected="false"><i class="fa fa-fw fa-sign-out"></i> Logout</a></li>
+    </ul>
+  </nav>
+
+  <div class="content">
+      {% include "mobile-menu.html" %}
+
+      <div class="section-title" data-aos="zoom-out">
+        <h2>View and Update Resident Profile</h2>
+      </div>
+
+          <div class="profile-block">
+            <div>
+              <div style="display: inline-block; text-align: right; width: 160px;">Unit:</div>
+              <div id="unit" style="display: inline-block; text-align: left; width: 30px"></div>
+            </div>
+
+            <div class="spacer"></div>
+
+            <div>
+              <div style="display: inline-block; text-align: right; width: 160px;">User Id:</div>
+              <div id="user_id" style="display: inline-block; text-align: left; width: 40px"> </div>
+            </div>
+
+            <div class="spacer"></div>
+
+            <div>
+              <div style="display: inline-block; text-align: right; width: 160px;">Main Occupant's Name:</div>
+              <div style="display: inline-block; text-align: left;"> <input id="name" style="width: 160px;" placeholder="full name"/></div>
+              <div style="display: inline-block; text-align: right; width: 50px;">Email:</div>
+              <div style="display: inline-block; text-align: left;"> <input id="email" style="width: 180px;" placeholder="email"/></div>
+              <div style="display: inline-block; text-align: right; width: 50px;">Phone:</div>
+              <div style="display: inline-block; text-align: left;"> <input id="phone" style="width: 120px;" placeholder="format 123 456-7890"/></div>
+            </div>
+
+            <div class="spacer"></div>
+
+            <div>
+              <div style="display: inline-block; text-align: right; width: 160px;">Owner's Name (if rental):</div>
+              <div style="display: inline-block; text-align: left;"> <input id="ownername" style="width: 160px;" placeholder="full name"/></div>
+              <div style="display: inline-block; text-align: right; width: 50px;">Email:</div>
+              <div style="display: inline-block; text-align: left;"> <input id="owneremail" style="width: 180px;" placeholder="email"/></div>
+              <div style="display: inline-block; text-align: right; width: 50px;">Phone:</div>
+              <div style="display: inline-block; text-align: left;"> <input id="ownerphone" style="width: 120px;" placeholder="format 123 456-7890"/></div>
+            </div>
+
+            <div class="spacer"></div>
+
+            <div>
+              <div style="display: inline-block; text-align: right; width: 160px;">Resident Since:</div>
+              <div style="display: inline-block; text-align: left;">
+                <select id="startdt_month" name="months">
+                  <option value="01">Jan</option>
+                  <option value="02">Feb</option>
+                  <option value="03">Mar</option>
+                  <option value="04">Apr</option>
+                  <option value="05">May</option>
+                  <option value="06">Jun</option>
+                  <option value="07">Jul</option>
+                  <option value="08">Aug</option>
+                  <option value="09">Sep</option>
+                  <option value="10">Oct</option>
+                  <option value="11">Nov</option>
+                  <option value="12">Dec</option>
+                </select>
+              </div>
+              <div style="display: inline-block; text-align: left;">
+                <select id="startdt_year" name="years">
+                  <option value="1991">1991</option>
+                  <option value="1992">1992</option>
+                  <option value="1993">1993</option>
+                  <option value="1994">1994</option>
+                  <option value="1995">1995</option>
+                  <option value="1996">1996</option>
+                  <option value="1997">1997</option>
+                  <option value="1998">1998</option>
+                  <option value="1999">1999</option>
+                  <option value="2000">2000</option>
+                  <option value="2001">2001</option>
+                  <option value="2002">2002</option>
+                  <option value="2003">2003</option>
+                  <option value="2004">2004</option>
+                  <option value="2005">2005</option>
+                  <option value="2006">2006</option>
+                  <option value="2007">2007</option>
+                  <option value="2008">2008</option>
+                  <option value="2009">2009</option>
+                  <option value="2010">2010</option>
+                  <option value="2011">2011</option>
+                  <option value="2012">2012</option>
+                  <option value="2013">2013</option>
+                  <option value="2014">2014</option>
+                  <option value="2015">2015</option>
+                  <option value="2016">2016</option>
+                  <option value="2017">2017</option>
+                  <option value="2018">2018</option>
+                  <option value="2019">2019</option>
+                  <option value="2020">2020</option>
+                  <option value="2021">2021</option>
+                  <option value="2022">2022</option>
+                  <option value="2023">2023</option>
+                  <option value="2024">2024</option>
+                  <option value="2025">2025</option>
+                  <option value="2026">2026</option>
+                  <option value="2027">2027</option>
+                  <option value="2028">2028</option>
+                  <option value="2029">2029</option>
+                  <option value="2030">2030</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="spacer"></div>
+
+            <div>
+              <div style="display: inline-block; text-align: right; width: 12%;"></div>
+              <div style="display: inline-block; text-align: left;  height: 250px; width: 50%;">
+                  <table id="residentstableid" style="line-height: 20px">
+                      <tr>
+                          <th style="width: 180px; background-color: hsl(203, 39%, 94%);"></th>
+                          <th style="width: 80px;">Name</th>
+                          <th style="width: 80px;">Email</th>
+                          <th style="width: 80px;">CC in Emails</th>
+                          <th style="width: 80px;">Phone</th>
+                      </tr>
+                      <tr height="28">
+                          <td></td>
+                          <td><input id="occup1_name" name="occupants_list" rows="10"></input></td>
+                          <td><input id="occup1_email" name="occupants_list" rows="10"></input></td>
+                          <td><input id="occup1_cc" name="occupants_list" type="checkbox"></input></td>
+                          <td><input id="occup1_phone" name="occupants_list" rows="10"></input></td>
+                      </tr>
+                      <tr height="28">
+                          <td></td>
+                          <td><input id="occup2_name" name="occupants_list" rows="10"></input></td>
+                          <td><input id="occup2_email" name="occupants_list" rows="10"></input></td>
+                          <td><input id="occup2_cc" name="occupants_list" type="checkbox"></input></td>
+                          <td><input id="occup2_phone" name="occupants_list" rows="10"></input></td>
+                      </tr>
+                      <tr height="28">
+                          <td style="min-width: 120px; text-align: right;">Other Occupants:</td>
+                          <td><input id="occup3_name" name="occupants_list" rows="10"></input></td>
+                          <td><input id="occup3_email" name="occupants_list" rows="10"></input></td>
+                          <td><input id="occup3_cc" name="occupants_list" type="checkbox"></input></td>
+                          <td><input id="occup3_phone" name="occupants_list" rows="10"></input></td>
+                      </tr>
+                      <tr height="28">
+                          <td></td>
+                          <td><input id="occup4_name" name="occupants_list" rows="10"></input></td>
+                          <td><input id="occup4_email" name="occupants_list" rows="10"></input></td>
+                          <td><input id="occup4_cc" name="occupants_list" type="checkbox"></input></td>
+                          <td><input id="occup4_phone" name="occupants_list" rows="10"></input></td>
+                      </tr>
+                      <tr height="28">
+                          <td></td>
+                          <td><input id="occup5_name" name="occupants_list" rows="10"></input></td>
+                          <td><input id="occup5_email" name="occupants_list" rows="10"></input></td>
+                          <td><input id="occup5_cc" name="occupants_list" type="checkbox"></input></td>
+                          <td><input id="occup5_phone" name="occupants_list" rows="10"></input></td>
+                      </tr>
+                  </table>
+              </div>
+            </div>
+
+
+            <div class="center">
+              <button class="button-div wide" id="save_resident_btn" onClick="saveResident();">Save</button>
+            </div>
+
+          </div>
+
+
+          <div class="spacer"></div>
+          <div class="spacer"></div>
+
+          <div class="profile-block">
+            <div>
+              <div style="display: inline-block; text-align: right; width: 18%;">Current Password:</div>
+              <div style="display: inline-block; width: 150px;"> <input id="curr_password" type="password"/></div>
+            </div>
+            <div class="spacer"></div>
+            <div>
+              <div style="display: inline-block; text-align: right; width: 18%;">New Password:</div>
+              <div style="display: inline-block; width: 150px;"> <input id="new_password" type="password"/></div>
+            </div>
+            <div class="spacer"></div>
+            <div>
+              <div style="display: inline-block; text-align: right; width: 18%;">Repeat Password:</div>
+              <div style="display: inline-block; width: 150px;"> <input id="repeat_password" type="password"/></div>
+            </div>
+
+            <div class="spacer"></div>
+
+            <div class="center">
+              <button class="button-div wide" id="save_pass_btn" onClick="changePassword();">Change Password</button>
+            </div>
+          </div>
+
+
+          <div class="spacer"></div>
+          <div class="spacer"></div>
+
+          <div class="profile-block">
+            <div>
+              <div style="display: inline-block; text-align: right; width: 18%;">User Id:</div>
+              <div style="display: inline-block; width: 150px;"> <input id="curr_userid"/> </div>
+            </div>
+            <div class="spacer"></div>
+            <div>
+              <div style="display: inline-block; text-align: right; width: 18%;">Current Password:</div>
+              <div style="display: inline-block; width: 150px;"> <input id="changeid_panel_password" type="password"/></div>
+            </div>
+
+            <div class="spacer"></div>
+
+            <div class="center">
+              <button class="button-div wide" id="save_userid_btn" onClick="changeUserid();">Change User Id</button>
+            </div>
+          </div>
+
+  </div> <!-- closes content -->
+</div> <!-- closes main -->
+{% endblock %}
+
+{% block afterbody %}
+   <script src="{{ url_for('static', filename='js/profile.js') }}"></script>
+{% endblock %}

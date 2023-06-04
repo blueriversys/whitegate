@@ -10,15 +10,17 @@
     </div>
     <ul class="list-unstyled components">
       <li><a class="nav-link" href="home"><i class="fa fa-fw fa-home"></i> Home</a></li>
-      <li><a class="nav-link" href="about"><i class="fa fa-fw fa-info"></i> About</a></li>
-      <li><a class="nav-link" href="announcs"><i class="fa fa-fw fa-bullhorn"></i> Announcements</a></li>
 
       {% if current_user.is_authenticated %}
-          <li><a class="nav-link" href="docs"><i class="fa fa-fw fa-book"></i> Documents</a></li>
+        <li><a class="nav-link" href="profile"><i class="fa fa-fw fa-book"></i> My Profile</a></li>
       {% endif %}
 
+      <li><a class="nav-link" href="about"><i class="fa fa-fw fa-info"></i> About</a></li>
+      <li><a class="nav-link" href="announcs"><i class="fa fa-fw fa-bullhorn"></i> Announcements</a></li>
+      <li><a class="nav-link" href="docs"><i class="fa fa-fw fa-book"></i> Documents</a></li>
+
       {% if current_user.is_authenticated and current_user.get_type() != '3' %}
-          <li><a class="nav-link" href="upload" aria-selected="false"><i class="fa fa-fw fa-upload"></i> Upload</a></li>
+          <li><a class="nav-link" href="upload" aria-selected="false"><i class="fa fa-fw fa-upload"></i> Maintenance</a></li>
       {% endif %}
 
       <li class="active"><a class="nav-link" href="pics"><i class="fa fa-fw fa-picture-o"></i> Pictures</a></li>

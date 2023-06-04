@@ -28,37 +28,10 @@ $(document).ready(function() {
 //PORT   = 9999
 
 
-async function uploadFile(filename) {
-  let formData = new FormData(); 
-  var fileupload = document.getElementById(filename);
-
-  if (fileupload.files[0] == undefined || fileupload.files[0] == "") {
-  	  alert('Please select a document file before clicking the upload button.');
-  	  return;
-  }
-
-  formData.append("file", fileupload.files[0]);
-  formData.append("convname", filename);
-
-  await fetch('/upload', {
-    method: "POST", 
-    body: formData
-  }).then(response => {
-      if (!response.ok) {
-         throw new Error('The file upload has failed.');
-      }
-      else {
-         alert('File upload was successful.');
-      }
-  });
-}
-
-
 function sendEmail(json) {
   var userid = json.response.resident.userid;
   var passw = json.response.resident.password;
   var email = json.response.resident.email;
-  //alert('userid '+userid + '   pass '+passw);
 
   // here we make a request to "sendsinglemail"
   var request = new XMLHttpRequest();
@@ -122,6 +95,12 @@ function sendBulkEmail() {
   var requestObj = new Object();
   requestObj.subject = document.getElementById('titlefield_id').value;
   requestObj.body = document.getElementById('emailtextfield_id').value;
+
+  if ( requestObj.subject.trim().length == 0 || requestObj.body.trim().length == 0 ) {
+      alert("Title and Body of the message are required");
+      return;
+  }
+
   jsonStr = '{ "request": ' + JSON.stringify(requestObj) + '}';
   request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
   request.send(jsonStr);
@@ -167,6 +146,42 @@ function startSendEmail() {
 
 }
 
+function saveAnnouncs() {
+  var announcs = document.getElementById("announctextfield_id").value;
+  var request = new XMLHttpRequest();
+  request.open('POST', '/saveannouncs', true)
+
+  var requestObj = new Object();
+  requestObj.lines = announcs;
+  jsonStr = '{ "announc": ' + JSON.stringify(requestObj) + '}';
+  request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  request.send(jsonStr);
+
+  request.onload = function () {
+    // Begin accessing JSON data here
+    var json = JSON.parse(this.response);
+
+    if (request.status >= 200 && request.status < 400) {
+        if (json.response.status == 'success') {
+            alert('Announcements have been saved.');
+            return;
+        }
+        else {
+            alert('There was a problem trying to save the announcements.');
+            return;
+        }
+    }
+    else {
+        alert('Error saving the announcements.');
+        return;
+    }
+  }
+
+}
+
+
+
+
 
 function retrieveUsers() {
   var request = new XMLHttpRequest()
@@ -195,12 +210,12 @@ function retrieveUsers() {
 }
 
 function retrieveUserByUnit() {
-  var unit = document.getElementById("unitid").value;
+  var unit = document.getElementById("maint_unit").value;
   retrieveUser('unit', unit);
 }
 
 function retrieveUserByUserId() {
-  var userid = document.getElementById('userid').value;
+  var userid = document.getElementById('maint_userid').value;
   if (userid === '') {
     alert('Must enter a User Id for this search.');
     return;
@@ -251,7 +266,7 @@ function retrieveUser(type, argValue) {
 
 function saveUser() {
   var request = new XMLHttpRequest();
-  request.open('POST', '/saveresident', true)
+  request.open('POST', '/saveresidentpartial', true)
   
   request.onload = function () {
     // Begin accessing JSON data here
@@ -266,22 +281,52 @@ function saveUser() {
   }    
 
   var requestObj = new Object();
-  requestObj.unit = document.getElementById('unitid').value;
-  requestObj.userid = document.getElementById('userid').value;
-  requestObj.lastname = document.getElementById('lastname').value;
-  requestObj.name = document.getElementById('name').value;
-  requestObj.email = document.getElementById('email').value;
-  requestObj.startdt = document.getElementById('startdt').value;
-  requestObj.phone = document.getElementById('phone').value;
-  requestObj.type = document.getElementById('type').value;
+  requestObj.unit = document.getElementById('maint_unit').value;
+  requestObj.userid = document.getElementById('maint_userid').value;
+  requestObj.password = document.getElementById('maint_password').value;
+  requestObj.name = document.getElementById('maint_name').value;
+  requestObj.email = document.getElementById('maint_email').value;
+  requestObj.phone = document.getElementById('maint_phone').value;
+  requestObj.ownername = document.getElementById('maint_ownername').value;
+  requestObj.owneremail = document.getElementById('maint_owneremail').value;
+  requestObj.ownerphone = document.getElementById('maint_ownerphone').value;
+
+  startdt = new Object();
+  startdt.month = document.getElementById('maint_startdt_month').value;
+  startdt.year = document.getElementById('maint_startdt_year').value;
+  requestObj.startdt = startdt;
+  requestObj.type = document.getElementById('maint_type').value;
+
+  const occupants = [];
+  occupants[0]= new Object();
+  occupants[1]= new Object();
+  occupants[2]= new Object();
+  occupants[3]= new Object();
+  occupants[4]= new Object();
+  occupants[0].name = document.getElementById('maint_occup1_name').value;
+  occupants[0].email = document.getElementById('maint_occup1_email').value;
+  occupants[0].cc = document.getElementById('maint_occup1_cc').checked;
+  occupants[0].phone = document.getElementById('maint_occup1_phone').value;
+  occupants[1].name = document.getElementById('maint_occup2_name').value;
+  occupants[1].email = document.getElementById('maint_occup2_email').value;
+  occupants[1].cc = document.getElementById('maint_occup2_cc').checked;
+  occupants[1].phone = document.getElementById('maint_occup2_phone').value;
+  occupants[2].name = document.getElementById('maint_occup3_name').value;
+  occupants[2].email = document.getElementById('maint_occup3_email').value;
+  occupants[2].cc = document.getElementById('maint_occup3_cc').checked;
+  occupants[2].phone = document.getElementById('maint_occup3_phone').value;
+  occupants[3].name = document.getElementById('maint_occup4_name').value;
+  occupants[3].email = document.getElementById('maint_occup4_email').value;
+  occupants[3].cc = document.getElementById('maint_occup4_cc').checked;
+  occupants[3].phone = document.getElementById('maint_occup4_phone').value;
+  occupants[4].name = document.getElementById('maint_occup5_name').value;
+  occupants[4].email = document.getElementById('maint_occup5_email').value;
+  occupants[4].cc = document.getElementById('maint_occup5_cc').checked;
+  occupants[4].phone = document.getElementById('maint_occup5_phone').value;
+  requestObj.occupants = occupants;
 
   if (requestObj.userid === '') {
     alert('User Id is a required field');
-    return;
-  }
-
-  if (requestObj.lastname === '') {
-    alert('Last Name is a required field');
     return;
   }
 
@@ -302,6 +347,11 @@ function saveUser() {
     return;
   }
 
+  if (requestObj.password === '') {
+    alert('Password must be filled out');
+    return;
+  }
+
   // const person = {firstName:"John", lastName:"Doe", age:50, eyeColor:"blue"};
   jsonStr = '{ "resident": ' + JSON.stringify(requestObj) + '}';
   request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
@@ -309,33 +359,111 @@ function saveUser() {
 }
 
 function cleanScreen() {
-  document.getElementById('userid').value = '';
-  document.getElementById('lastname').value = '';
-  document.getElementById('name').value = '';
-  document.getElementById('email').value = '';
-  document.getElementById('startdt').value = '';
-  document.getElementById('phone').value = '';
-  document.getElementById('type').value = '';
+    document.getElementById('maint_userid').value = '';
+    document.getElementById('maint_password').value = '';
+    document.getElementById('maint_name').value = '';
+    document.getElementById('maint_email').value = '';
+    document.getElementById('maint_phone').value = '';
+    document.getElementById('maint_ownername').value = '';
+    document.getElementById('maint_owneremail').value = '';
+    document.getElementById('maint_ownerphone').value = '';
+    document.getElementById('maint_startdt_month').value = '';
+    document.getElementById('maint_startdt_year').value = '';
+    document.getElementById('maint_type').value = '';
+
+    document.getElementById('maint_occup1_name').value = '';
+    document.getElementById('maint_occup1_email').value = '';
+    document.getElementById('maint_occup1_cc').checked = false;
+    document.getElementById('maint_occup1_phone').value = '';
+    document.getElementById('maint_occup2_name').value = '';
+    document.getElementById('maint_occup2_email').value = '';
+    document.getElementById('maint_occup2_cc').checked = false;
+    document.getElementById('maint_occup2_phone').value = '';
+    document.getElementById('maint_occup3_name').value = '';
+    document.getElementById('maint_occup3_email').value = '';
+    document.getElementById('maint_occup3_cc').checked = false;
+    document.getElementById('maint_occup3_phone').value = '';
+    document.getElementById('maint_occup4_name').value = '';
+    document.getElementById('maint_occup4_email').value = '';
+    document.getElementById('maint_occup4_cc').checked = false;
+    document.getElementById('maint_occup4_phone').value = '';
+    document.getElementById('maint_occup5_name').value = '';
+    document.getElementById('maint_occup5_email').value = '';
+    document.getElementById('maint_occup5_cc').checked = false;
+    document.getElementById('maint_occup5_phone').value = '';
 }
 
 function populateScreen(json) {
-  var unit = json.response.resident.unit;
-  var userid = json.response.resident.userid;
-  var lastname = json.response.resident.lastname;
-  var name = json.response.resident.name;
-  var email = json.response.resident.email;
-  var startdt = json.response.resident.startdt;
-  var phone = json.response.resident.phone;
-  var type = json.response.resident.type;
+    var unit = json.response.resident.unit;
+    var userid = json.response.resident.userid;
+    var password = json.response.resident.password;
+    var name = json.response.resident.name;
+    var email = json.response.resident.email;
+    var phone = json.response.resident.phone;
+    var ownername = json.response.resident.ownername;
+    var owneremail = json.response.resident.owneremail;
+    var ownerphone = json.response.resident.ownerphone;
+    var startdtMonth = json.response.resident.startdt.month;
+    var startdtYear = json.response.resident.startdt.year;
+    var type = json.response.resident.type;
 
-  document.getElementById('unitid').value = unit;
-  document.getElementById('userid').value = userid;
-  document.getElementById('lastname').value = lastname;
-  document.getElementById('name').value = name;
-  document.getElementById('email').value = email;
-  document.getElementById('startdt').value = startdt;
-  document.getElementById('phone').value = phone;
-  document.getElementById('type').value = type;
+    document.getElementById('maint_unit').value = unit;
+    document.getElementById('maint_userid').value = userid;
+    document.getElementById('maint_password').value = password;
+    document.getElementById('maint_name').value = name;
+    document.getElementById('maint_email').value = email;
+    document.getElementById('maint_phone').value = phone;
+    document.getElementById('maint_ownername').value = ownername;
+    document.getElementById('maint_owneremail').value = owneremail;
+    document.getElementById('maint_ownerphone').value = ownerphone;
+    document.getElementById('maint_startdt_month').value = startdtMonth;
+    document.getElementById('maint_startdt_year').value  = startdtYear;
+    document.getElementById('maint_type').value = type;
+
+    if ( json.response.resident.occupants.length != 0) {
+        document.getElementById('maint_occup1_name').value = json.response.resident.occupants[0].name;
+        document.getElementById('maint_occup1_email').value = json.response.resident.occupants[0].email;
+        document.getElementById('maint_occup1_cc').checked = json.response.resident.occupants[0].cc;
+        document.getElementById('maint_occup1_phone').value = json.response.resident.occupants[0].phone;
+        document.getElementById('maint_occup2_name').value = json.response.resident.occupants[1].name;
+        document.getElementById('maint_occup2_email').value = json.response.resident.occupants[1].email;
+        document.getElementById('maint_occup2_cc').checked = json.response.resident.occupants[1].cc;
+        document.getElementById('maint_occup2_phone').value = json.response.resident.occupants[1].phone;
+        document.getElementById('maint_occup3_name').value = json.response.resident.occupants[2].name;
+        document.getElementById('maint_occup3_email').value = json.response.resident.occupants[2].email;
+        document.getElementById('maint_occup3_cc').checked = json.response.resident.occupants[2].cc;
+        document.getElementById('maint_occup3_phone').value = json.response.resident.occupants[2].phone;
+        document.getElementById('maint_occup4_name').value = json.response.resident.occupants[3].name;
+        document.getElementById('maint_occup4_email').value = json.response.resident.occupants[3].email;
+        document.getElementById('maint_occup4_cc').checked = json.response.resident.occupants[3].cc;
+        document.getElementById('maint_occup4_phone').value = json.response.resident.occupants[3].phone;
+        document.getElementById('maint_occup5_name').value = json.response.resident.occupants[4].name;
+        document.getElementById('maint_occup5_email').value = json.response.resident.occupants[4].email;
+        document.getElementById('maint_occup5_cc').checked = json.response.resident.occupants[4].cc;
+        document.getElementById('maint_occup5_phone').value = json.response.resident.occupants[4].phone;
+    }
+    else {
+        document.getElementById('maint_occup1_name').value = '';
+        document.getElementById('maint_occup1_email').value = '';
+        document.getElementById('maint_occup1_cc').checked = '';
+        document.getElementById('maint_occup1_phone').value = '';
+        document.getElementById('maint_occup2_name').value = '';
+        document.getElementById('maint_occup2_email').value = '';
+        document.getElementById('maint_occup2_cc').checked = '';
+        document.getElementById('maint_occup2_phone').value = '';
+        document.getElementById('maint_occup3_name').value = '';
+        document.getElementById('maint_occup3_email').value = '';
+        document.getElementById('maint_occup3_cc').checked = '';
+        document.getElementById('maint_occup3_phone').value = '';
+        document.getElementById('maint_occup4_name').value = '';
+        document.getElementById('maint_occup4_email').value = '';
+        document.getElementById('maint_occup4_cc').checked = '';
+        document.getElementById('maint_occup4_phone').value = '';
+        document.getElementById('maint_occup5_name').value = '';
+        document.getElementById('maint_occup5_email').value = '';
+        document.getElementById('maint_occup5_cc').checked = '';
+        document.getElementById('maint_occup5_phone').value = '';
+    }
 }
 
 function populateTable(json) {
@@ -348,62 +476,41 @@ function populateTable(json) {
 
   for (var i=0; i<json.residents.length; i++) {
       var row = table.insertRow( -1 ); // -1 is insert as last  
-      var cell0 = row.insertCell( - 1 ); // -1 is insert as last            
-      var cell1 = row.insertCell( - 1 ); // -1 is insert as last            
-      var cell2 = row.insertCell( - 1 ); // -1 is insert as last   
-      var cell3 = row.insertCell( - 1 ); // -1 is insert as last   
-      var cell4 = row.insertCell( - 1 ); // -1 is insert as last   
-      var cell5 = row.insertCell( - 1 ); // -1 is insert as last   
-      var cell6 = row.insertCell( - 1 ); // -1 is insert as last   
-      var cell7 = row.insertCell( - 1 ); // -1 is insert as last   
+      var unit_cell = row.insertCell( - 1 ); // -1 is insert as last
+      var user_id_cell = row.insertCell( - 1 ); // -1 is insert as last
+      var pass_cell = row.insertCell( - 1 ); // -1 is insert as last
+      var name_cell = row.insertCell( - 1 ); // -1 is insert as last
+      var email_cell = row.insertCell( - 1 ); // -1 is insert as last
+      var phone_cell = row.insertCell( - 1 ); // -1 is insert as last
+      var ownername_cell = row.insertCell( - 1 ); // -1 is insert as last
+      var owneremail_cell = row.insertCell( - 1 ); // -1 is insert as last
+      var ownerphone_cell = row.insertCell( - 1 ); // -1 is insert as last
+      var startdate_cell = row.insertCell( - 1 ); // -1 is insert as last
+
       var unit = json.residents[i].unit;
       var userid = json.residents[i].userid;
       var password = json.residents[i].password;
-      var lastname = json.residents[i].lastname;
       var name = json.residents[i].name;
       var email = json.residents[i].email;
-      var startdt = json.residents[i].startdt;
       var phone = json.residents[i].phone;
-      cell0.innerHTML = unit;
-      cell1.innerHTML = userid;
-      cell2.innerHTML = password;
-      cell3.innerHTML = lastname;
-      cell4.innerHTML = name;
-      cell5.innerHTML = email;
-      cell6.innerHTML = startdt;
-      cell7.innerHTML = phone;
-  }    
+      var ownername = json.residents[i].ownername;
+      var owneremail = json.residents[i].owneremail;
+      var ownerphone = json.residents[i].ownerphone;
+      var startdtMonth = json.residents[i].startdt.month;
+      var startdtYear = json.residents[i].startdt.year;
+
+      unit_cell.innerHTML = unit;
+      user_id_cell.innerHTML = userid;
+      pass_cell.innerHTML = password;
+      name_cell.innerHTML = name;
+      email_cell.innerHTML = email;
+      phone_cell.innerHTML = phone;
+      ownername_cell.innerHTML = ownername;
+      owneremail_cell.innerHTML = owneremail;
+      ownerphone_cell.innerHTML = ownerphone;
+      if (startdtMonth != '' && startdtYear != '') {
+          startdate_cell.innerHTML = startdtMonth + "/" + startdtYear;
+      }
+  }
 }
 
-function saveAnnouncs() {
-  var announcs = document.getElementById("announctextfield_id").value;
-  var request = new XMLHttpRequest();
-  request.open('POST', '/saveannouncs', true)
-
-  var requestObj = new Object();
-  requestObj.lines = announcs;
-  jsonStr = '{ "announc": ' + JSON.stringify(requestObj) + '}';
-  request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-  request.send(jsonStr);
-  
-  request.onload = function () {
-    // Begin accessing JSON data here
-    var json = JSON.parse(this.response);
-    
-    if (request.status >= 200 && request.status < 400) {
-        if (json.response.status == 'success') {
-            alert('Announcements have been saved.');
-            return;
-        }
-        else {
-            alert('There was a problem trying to save the announcements.');
-            return;
-        }
-    } 
-    else {
-        alert('Error saving the announcements.');
-        return;
-    }
-  }    
-
-}

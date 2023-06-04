@@ -55,6 +55,18 @@
     text-align: left;
 }
 
+
+.align-right-fixed {
+  display: inline-block;
+  width: 160px;
+  text-align: right;
+}
+
+.align-left-fixed {
+    display: inline-block;
+    text-align: left;
+}
+
 .button-div {
   margin-top: 4px;
   margin-bottom: 8px;
@@ -489,6 +501,14 @@ a[data-toggle="collapse"] {
   width: 130px;  
   min-height: 28px;
   vertical-align: middle;
+}
+
+.profile-block {
+  padding-top: 12px;
+  background: hsl(203, 39%, 94%);
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 300;
 }
 
 .upload-block {

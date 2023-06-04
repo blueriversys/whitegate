@@ -2,6 +2,31 @@ function onLoadAction() {
     loadAnnouncs();
 }
 
+async function uploadFile(filename) {
+  let formData = new FormData();
+  var fileupload = document.getElementById(filename);
+
+  if (fileupload.files[0] == undefined || fileupload.files[0] == "") {
+  	  alert('Please select a document file before clicking the upload button.');
+  	  return;
+  }
+
+  formData.append("file", fileupload.files[0]);
+  formData.append("convname", filename);
+
+  await fetch('/upload', {
+    method: "POST",
+    body: formData
+  }).then(response => {
+      if (!response.ok) {
+         throw new Error('The file upload has failed.');
+      }
+      else {
+         alert('File upload was successful.');
+      }
+  });
+}
+
 function deleteFile(filepath, filename) {
     var request = new XMLHttpRequest()
     request.open('POST', '/deletefile', true)

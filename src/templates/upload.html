@@ -10,10 +10,11 @@
     </div>
     <ul class="list-unstyled components">
       <li><a class="nav-link" href="home"><i class="fa fa-fw fa-home"></i> Home</a></li>
+      <li><a class="nav-link" href="profile"><i class="fa fa-fw fa-book"></i> My Profile</a></li>
       <li><a class="nav-link" href="about"><i class="fa fa-fw fa-info"></i> About</a></li>
       <li><a class="nav-link" href="announcs"><i class="fa fa-fw fa-bullhorn"></i> Announcements</a></li>
       <li><a class="nav-link" href="docs"><i class="fa fa-fw fa-book"></i> Documents</a></li>
-      <li class="active"><a class="nav-link" href="upload" aria-selected="false"><i class="fa fa-fw fa-upload"></i> Upload</a></li>
+      <li class="active"><a class="nav-link" href="upload" aria-selected="false"><i class="fa fa-fw fa-upload"></i> Maintenance</a></li>
       <li><a class="nav-link" href="pics"><i class="fa fa-fw fa-picture-o"></i> Pictures</a></li>
       <li><a class="nav-link" href="logout" aria-selected="false"><i class="fa fa-fw fa-sign-out"></i> Logout</a></li>
     </ul>
@@ -65,17 +66,17 @@
         <p>
 
         <div class="upload-block">
-          <p>Announcement Document</p>
+          <p>Public Documents</p>
           <div class="upload-block-row">
                   <div class="col-1 upload-browse">
-                    <input id="announc" type="file"/>
-                    <button id="upload-button" onclick="uploadFile('announc')"> Upload an Announcement</button>
+                    <input id="pubfile" type="file"/>
+                    <button id="upload-button" onclick="uploadFile('pubfile')"> Upload a Public Document</button>
                   </div>
           </div>
         </div>
 
         <p>
-      
+
         <div class="upload-block">
           <p>Picture</p>
           <div class="upload-block-row">
@@ -253,7 +254,62 @@
             </div>
           </div>
         </div>
-  
+
+        <p>
+
+        <div class="upload-block">
+          <p>Financial Statements - 2023</p>
+          <div class="upload-block-row">
+            <div class="col-1 upload-browse">
+              <input id="2023-01" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2023-01')"> Upload Jan-2023</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2023-02" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2023-02')"> Upload Feb-2023</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2023-03" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2023-03')"> Upload Mar-2023</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2023-04" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2023-04')"> Upload Apr-2023</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2023-05" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2023-05')"> Upload May-2023</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2023-06" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2023-06')"> Upload Jun-2023</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2023-07" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2023-07')"> Upload Jul-2023</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2023-08" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2023-08')"> Upload Aug-2023</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2023-09" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2023-09')"> Upload Sep-2023</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2023-10" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2023-10')"> Upload Oct-2023</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2023-11" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2023-11')"> Upload Nov-2023</button>
+            </div>
+            <div class="col-1 upload-browse">
+              <input id="2023-12" type="file"/>
+              <button id="upload-button" onclick="uploadFile('2023-12')"> Upload Dec-2023</button>
+            </div>
+          </div>
+
       </div>
 
       <p class="spacer"></p>
@@ -397,14 +453,16 @@
           <div class="table-div" style="height: 400px;">
               <table class="table table-sm" id="residentstableid">
                   <tr>
-                      <th style="width: 5%;">Unit</th>
-                      <th style="width: 8%;">User Id</th>
+                      <th style="width: 3%;">Unit</th>
+                      <th style="width: 6%;">User Id</th>
                       <th style="width: 8%;">Password</th>
-                      <th style="width: 15%;">Last Name</th>
-                      <th style="width: 15%;">Name</th>
-                      <th style="width: 15%;">Email</th>
-                      <th style="width: 10%;">Start Date</th>
-                      <th style="width: 10%;">Phone</th>
+                      <th style="width: 15%;">Resident's Name</th>
+                      <th style="width: 15%;">Resident's Email</th>
+                      <th style="width: 8%;">Resident's Phone</th>
+                      <th style="width: 13%;">Owner's Name</th>
+                      <th style="width: 13%;">Owner's Email</th>
+                      <th style="width: 8%;">Owner's Phone</th>
+                      <th style="width: 8%;">Start Date</th>
                   </tr>
               </table>
           </div>
@@ -412,11 +470,15 @@
           <p></p>
           <p></p>
 
+          <!--
+             Here is the section for maintenance of an individual resident, retrievable by unit number
+          -->
+
           <div class="upload-block">
             <div class="passrow">
-              <div class="aright">Unit:</div>
-              <div class="aleft">
-                <select id="unitid" name="units" onchange="retrieveUserByUnit();">
+              <div class="align-right-fixed">Unit:</div>
+              <div class="align-left-fixed">
+                <select id="maint_unit" name="units" onchange="retrieveUserByUnit();">
                   <option value="0">0</option>
                   <option value="1">1</option>
                   <option value="2">2</option>
@@ -476,47 +538,169 @@
             </div>
 
             <div class="passrow">
-              <div class="aright">User Id:</div>
-              <div class="aleft"> <input id="userid" placeholder="user id"></input></div>
+              <div class="align-right-fixed">User Id:</div>
+              <div class="align-left-fixed"> <input id="maint_userid" placeholder="user id"></input></div>
               <button type="button-div" id="retrievebtn" onClick="retrieveUserByUserId();">Retrieve</button>
-            </div>
-            <div class="passrow">
-              <div class="aright">Last Name:</div>
-              <div class="aleft"> <input id="lastname" placeholder="last name"></input></div>
-            </div>
-            <div class="passrow">
-              <div class="aright">Name:</div>
-              <div class="aleft"> <input id="name" placeholder="first name"></input></div>
-            </div>
-            <div class="passrow">
-              <div class="aright">Email:</div>
-              <div class="aleft"> <input id="email" placeholder="email address"></input></div>
-            </div>
-            <div class="passrow">
-              <div class="aright">Start Date:</div>
-              <div class="aleft"> <input id="startdt" placeholder="resident since when"></input></div>
-            </div>
-            <div class="passrow">
-              <div class="aright">Phone:</div>
-              <div class="aleft"> <input id="phone" placeholder="phone"></input></div>
             </div>
 
             <div class="passrow">
-              <div class="aright">Type:</div>
-              <div class="aleft"> 
-                <select id="type" name="type">
+              <div class="align-right-fixed">Password:</div>
+              <div class="align-left-fixed"> <input id="maint_password"></input></div>
+            </div>
+
+            <div class="passrow">
+              <div class="align-right-fixed">Main Occupant's Name:</div>
+              <div class="align-left-fixed"> <input id="maint_name" style="width: 160px;" placeholder="full name"/></div>
+              <div class="align-right-fixed">Email:</div>
+              <div class="align-left-fixed"> <input id="maint_email" style="width: 180px;" placeholder="email"/></div>
+              <div class="align-right-fixed">Phone:</div>
+              <div class="align-left-fixed"> <input id="maint_phone" style="width: 120px;" placeholder="format 123 456-7890"/></div>
+            </div>
+
+            <div class="passrow">
+              <div class="align-right-fixed">Owner's Name (if rental):</div>
+              <div class="align-left-fixed"> <input id="maint_ownername" style="width: 160px;" placeholder="full name"/></div>
+              <div class="align-right-fixed">Email:</div>
+              <div class="align-left-fixed"> <input id="maint_owneremail" style="width: 180px;" placeholder="email"/></div>
+              <div class="align-right-fixed">Phone:</div>
+              <div class="align-left-fixed"> <input id="maint_ownerphone" style="width: 120px;" placeholder="format 123 456-7890"/></div>
+            </div>
+
+            <div class="passrow">
+              <div class="align-right-fixed">Resident Since:</div>
+              <div class="align-left-fixed">
+                <select id="maint_startdt_month" name="months">
+                  <option value=""></option>
+                  <option value="01">Jan</option>
+                  <option value="02">Feb</option>
+                  <option value="03">Mar</option>
+                  <option value="04">Apr</option>
+                  <option value="05">May</option>
+                  <option value="06">Jun</option>
+                  <option value="07">Jul</option>
+                  <option value="08">Aug</option>
+                  <option value="09">Sep</option>
+                  <option value="10">Oct</option>
+                  <option value="11">Nov</option>
+                  <option value="12">Dec</option>
+                </select>
+              </div>
+              <div class="align-left-fixed">
+                <select id="maint_startdt_year" name="years">
+                  <option value=""></option>
+                  <option value="1991">1991</option>
+                  <option value="1992">1992</option>
+                  <option value="1993">1993</option>
+                  <option value="1994">1994</option>
+                  <option value="1995">1995</option>
+                  <option value="1996">1996</option>
+                  <option value="1997">1997</option>
+                  <option value="1998">1998</option>
+                  <option value="1999">1999</option>
+                  <option value="2000">2000</option>
+                  <option value="2001">2001</option>
+                  <option value="2002">2002</option>
+                  <option value="2003">2003</option>
+                  <option value="2004">2004</option>
+                  <option value="2005">2005</option>
+                  <option value="2006">2006</option>
+                  <option value="2007">2007</option>
+                  <option value="2008">2008</option>
+                  <option value="2009">2009</option>
+                  <option value="2010">2010</option>
+                  <option value="2011">2011</option>
+                  <option value="2012">2012</option>
+                  <option value="2013">2013</option>
+                  <option value="2014">2014</option>
+                  <option value="2015">2015</option>
+                  <option value="2016">2016</option>
+                  <option value="2017">2017</option>
+                  <option value="2018">2018</option>
+                  <option value="2019">2019</option>
+                  <option value="2020">2020</option>
+                  <option value="2021">2021</option>
+                  <option value="2022">2022</option>
+                  <option value="2023">2023</option>
+                  <option value="2024">2024</option>
+                  <option value="2025">2025</option>
+                  <option value="2026">2026</option>
+                  <option value="2027">2027</option>
+                  <option value="2028">2028</option>
+                  <option value="2029">2029</option>
+                  <option value="2030">2030</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="passrow">
+              <div class="align-right-fixed">Type:</div>
+              <div class="align-left-fixed">
+                <select id="maint_type" name="type">
                   <option value="0">Admin</option>
                   <option value="1">Board Member</option>
                   <option value="2">Secretary</option>
                   <option value="3" selected>Resident</option>
-                </select>  
+                </select>
+              </div>
+            </div>
+
+            <div class="spacer"></div>
+
+            <div>
+              <div style="display: inline-block; text-align: right; width: 12%;"></div>
+              <div style="display: inline-block; text-align: left;  height: 250px; width: 50%;">
+                  <table id="maint_residentstableid" style="line-height: 20px">
+                      <tr>
+                          <th style="width: 180px; background-color: hsl(203, 39%, 94%);"></th>
+                          <th style="width: 80px;">Name</th>
+                          <th style="width: 80px;">Email</th>
+                          <th style="width: 80px;">CC in Emails</th>
+                          <th style="width: 80px;">Phone</th>
+                      </tr>
+                      <tr height="28">
+                          <td></td>
+                          <td><input id="maint_occup1_name" name="occupants_list" rows="10"></input></td>
+                          <td><input id="maint_occup1_email" name="occupants_list" rows="10"></input></td>
+                          <td><input id="maint_occup1_cc" name="occupants_list" type="checkbox"></input></td>
+                          <td><input id="maint_occup1_phone" name="occupants_list" rows="10"></input></td>
+                      </tr>
+                      <tr height="28">
+                          <td></td>
+                          <td><input id="maint_occup2_name" name="occupants_list" rows="10"></input></td>
+                          <td><input id="maint_occup2_email" name="occupants_list" rows="10"></input></td>
+                          <td><input id="maint_occup2_cc" name="occupants_list" type="checkbox"></input></td>
+                          <td><input id="maint_occup2_phone" name="occupants_list" rows="10"></input></td>
+                      </tr>
+                      <tr height="28">
+                          <td style="min-width: 120px; text-align: right;">Other Occupants:</td>
+                          <td><input id="maint_occup3_name" name="occupants_list" rows="10"></input></td>
+                          <td><input id="maint_occup3_email" name="occupants_list" rows="10"></input></td>
+                          <td><input id="maint_occup3_cc" name="occupants_list" type="checkbox"></input></td>
+                          <td><input id="maint_occup3_phone" name="occupants_list" rows="10"></input></td>
+                      </tr>
+                      <tr height="28">
+                          <td></td>
+                          <td><input id="maint_occup4_name" name="occupants_list" rows="10"></input></td>
+                          <td><input id="maint_occup4_email" name="occupants_list" rows="10"></input></td>
+                          <td><input id="maint_occup4_cc" name="occupants_list" type="checkbox"></input></td>
+                          <td><input id="maint_occup4_phone" name="occupants_list" rows="10"></input></td>
+                      </tr>
+                      <tr height="28">
+                          <td></td>
+                          <td><input id="maint_occup5_name" name="occupants_list" rows="10"></input></td>
+                          <td><input id="maint_occup5_email" name="occupants_list" rows="10"></input></td>
+                          <td><input id="maint_occup5_cc" name="occupants_list" type="checkbox"></input></td>
+                          <td><input id="maint_occup5_phone" name="occupants_list" rows="10"></input></td>
+                      </tr>
+                  </table>
               </div>
             </div>
 
             <div class="center">
               <button class="button-div wide" id="savebtn" onClick="saveUser();">Save</button>
-              <button class="button-div wide" id="sendinfobtn" onClick="startSendEmail();">Send Login Email to User</button>
-            </div>   
+              <button class="button-div wide" id="sendinfobtn" onClick="startSendEmail();">Send Login Info to User</button>
+            </div>
+
           </div>
         </div>
         <p class="spacer"></p>

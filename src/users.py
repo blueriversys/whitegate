@@ -14,30 +14,50 @@ USER_TYPE_RESIDENT = 3
 
 
 class User(UserMixin):
-    def __init__(self, unit, username, password, lastname, name, email, startdt, phone, id, type, active=True):
+    def __init__(self, id, unit, userid, password, name, email, startdt, phone, type, ownername, owneremail, ownerphone, occupants, active=True):
+        self.id = id
         self.unit = unit
-        self.username = username
+        self.userid = userid
         self.password = password
-        self.lastname = lastname
         self.name = name
         self.email = email
         self.startdt = startdt
         self.phone = phone
-        self.id = id
         self.type = type
+        self.ownername = ownername
+        self.owneremail = owneremail
+        self.ownerphone = ownerphone
+        self.occupants = occupants
         self.active = active
+
+    def get_json_data(self):
+        user = {
+            'unit': self.unit,
+            'userid': self.userid,
+            'name': self.name,
+            'password': self.password,
+            'email': self.email,
+            'startdt': self.startdt,
+            'phone': self.phone,
+            'type': self.type,
+            'ownername': self.ownername,
+            'owneremail': self.owneremail,
+            'ownerphone': self.ownerphone,
+            'occupants': self.occupants
+        }
+        return user
+
+    def get_id(self):
+        return self.id
 
     def get_unit(self):
         return self.unit
 
-    def get_username(self):
-        return self.username
+    def get_userid(self):
+        return self.userid
 
     def get_password(self):
         return self.password
-
-    def get_lastname(self):
-        return self.lastname
 
     def get_name(self):
         return self.name
@@ -51,17 +71,26 @@ class User(UserMixin):
     def get_phone(self):
         return self.phone
 
-    def get_id(self):
-        return self.id
-
     def get_type(self):
         return self.type
+
+    def get_ownername(self):
+        return self.owner
+
+    def get_owneremail(self):
+        return self.owneremail
+
+    def get_ownerphone(self):
+        return self.ownerphone
+
+    def get_occupants(self):
+        return self.occupants
 
     def is_active(self):
         return self.active
 
     def get_auth_token(self):
-        return make_secure_token(self.username , key='secret_key')
+        return make_secure_token(self.userid , key='secret_key')
 
 class UsersRepository:
     def __init__(self):
@@ -74,17 +103,17 @@ class UsersRepository:
     def add_user_to_dict(self, user):
         self.unit_dict.setdefault(user.unit, user)
 
-    def get_user(self, username):
+    def get_user_by_userid(self, userid):
         for key in self.get_users():
             user = self.get_user_by_unit(key)
-            if user.username == username:
+            if user.userid == userid:
                 return user
         return None
     
-    def get_user_by_id(self, userid):
+    def get_user_by_id(self, id):
         for key in self.get_users():
             user = self.get_user_by_unit(key)
-            if user.id == userid:
+            if user.id == id:
                 return user
         return None
     
@@ -110,14 +139,17 @@ class UsersRepository:
             for user in self.unit_dict.values():
                 record = {
                     'unit': user.unit,
-                    'userid': user.username,
+                    'userid': user.userid,
                     'password': user.password,
-                    'lastname': user.lastname,
                     'name': user.name,
                     'email': user.email,
                     'startdt': user.startdt,
                     'phone': user.phone,
-                    'type': user.type
+                    'type': user.type,
+                    'ownername': user.ownername,
+                    'owneremail': user.owneremail,
+                    'ownerphone': user.ownerphone,
+                    'occupants': user.occupants
                 }
                 userslist.append(record)
             residents = {'residents': userslist}
