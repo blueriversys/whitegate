@@ -9,3 +9,5 @@ See the deployed website here: http://whitegatecondo.com
 If you need something similar to be developed for you, send us an email: joesilva01862@gmail.com
 
 Thanks.
+
+<img src="pictures/whitegatecondo.png">
