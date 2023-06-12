@@ -6,7 +6,7 @@ It's a completely dynamic website, meaning users are able to have full control o
 
 See the deployed website here: http://whitegatecondo.com
 
-If you need something similar to be developed for you, send us an email: joesilva01862@gmail.com
+If you need a similar website to be created for you, send us an email: joesilva01862@gmail.com
 
 Thanks.
 
