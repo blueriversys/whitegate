@@ -1,6 +1,7 @@
 # whitegate
 https://whitegatecondo.com Python code.
 
+
 This is the source code for a website Blue Rivers Sys wrote for a Condominium.
 It's a completely dynamic website, meaning users are able to have full control of how the site is maintained, with minimal intervention from the developers.
 
