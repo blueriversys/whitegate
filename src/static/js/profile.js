@@ -90,8 +90,8 @@ function retrieveLoggedinResident(residentUnit) {
         document.getElementById('repeat_password').value = '';
 
         // set the change id panel fields to blank
-        document.getElementById('curr_userid').value = json.response.resident.userid;
         document.getElementById('changeid_panel_password').value = '';
+        document.getElementById('new_userid').value = json.response.resident.userid;
     }
     else {
         alert('Error retrieving user');
@@ -274,10 +274,10 @@ function change_db_password(unit, new_password) {
 function changeUserid() {
   var userid = document.getElementById("user_id").innerHTML;
   var unit = document.getElementById("unit").innerHTML;
-  var userid = document.getElementById("curr_userid").value;
+  var new_userid = document.getElementById("new_userid").value;
   var curr_password = document.getElementById("changeid_panel_password").value;
 
-  if ( userid.length < 1) {
+  if ( new_userid.length < 1) {
       alert("New user id cannot be blank");
       return;
   }
@@ -292,7 +292,7 @@ function changeUserid() {
   request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
   request.send(jsonStr);
 
-  // invoke backend to check if the type current password matches current password
+  // invoke backend to check if the current password typed in matches the current password
   request.onload = function () {
     // Begin accessing JSON data here
     var json = JSON.parse(this.response);
@@ -311,7 +311,7 @@ function changeUserid() {
         }
 
         // all is good, let's change the password
-        change_db_userid(json.response.resident.unit, userid);
+        change_db_userid(json.response.resident.unit, new_userid);
     }
     else {
         alert('Error retrieving user');

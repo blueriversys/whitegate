@@ -1,4 +1,14 @@
+/*
+   This is invoked by announcs.html to handle announcement related operations.
+   Also used by announcs.html to load announcements, loadAnnouncs()
+*/
+
+/* invoked by announcs.html */
 function onLoadAction() {
+    loadAnnouncs();
+}
+
+function loadAnnouncs() {
     var request = new XMLHttpRequest()
     request.open('GET', '/getannouncs', true)
     
@@ -23,3 +33,4 @@ function onLoadAction() {
   
     request.send();
 }
+

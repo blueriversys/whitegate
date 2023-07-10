@@ -1,4 +1,9 @@
 {% extends "layout.html" %}
+
+{% block insidehead %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/lightbox.min.css') }}">
+{% endblock %}
+
 {% block body %}
 
 <div class="main">
@@ -41,11 +46,13 @@
       <h2>Pictures</h2>
     </div>
 
+    <div class="spacer"></div>
+
     <div class="container">
+<!--
       <div class="carousel-container position-relative row">
-        
-          <!-- Sorry! Lightbox doesn't work - yet. -->
-          <div id="myCarousel" class="center carousel slide shadow p-3 mb-5 bg-white rounded" data-ride="carousel">  
+          <!-- Sorry! Lightbox doesn't work - yet.
+          <div id="myCarousel" class="center carousel slide shadow p-3 mb-5 bg-white rounded" data-ride="carousel">
             <div class="carousel-inner shadow">
               <div class="carousel-item active" data-slide-number="0">
                 <img src="pics/home.jpg" class="d-block w-100" alt="..." data-remote="https://source.unsplash.com/Pn6iimgM-wo/" data-type="image" data-toggle="lightbox" data-gallery="example-gallery">
@@ -62,7 +69,7 @@
             </div>
           </div>
       </div>
-
+-->
       <!-- Carousel Navigation 
       <div id="carousel-thumbs" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
@@ -120,41 +127,54 @@
         </a>
   -->
 
-        <div class="row">
-          {% for pic in pics: %}
-              <div class="col-lg-3 col-md-4 p-3 mb-4 bg-white center shadow rounded d-flex align-items-stretch">  
-                      <div class="member-img">
-                          <a href="pics/{{pic}}" target="_blank">
-                              <img src="pics/{{pic}}" class="img-fluid" alt="">
-                          </a>
-                      </div>
-              </div>
-              <div style="margin: 1px;"></div>
-              {% endfor %}
-        </div>
-    </div> <!-- /container -->  
-  </div> <!-- closes content -->  
-
-<!--  
-  <section id="team" class="team">
-    <div class="row">
-      {% for pic in pics: %}
-        <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
-          <div class="member" data-aos="fade-up">
-              <div class="member-img">
-                <a href="pics/{{pic}}" _target="blank">
-                  <img src="pics/{{pic}}" class="img-fluid" alt="">
-                </a>
-              </div>
-              <div class="member-info">
-                <span>description goes here</span>
-              </div>
+<!--
+      <div class="row">
+        {% for pic in pics: %}
+          <div class="col-lg-3 col-md-4 p-3 mb-4 bg-white center shadow rounded d-flex align-items-stretch">
+                  <div class="member-img">
+                      <a href="pics/{{pic}}" target="_blank">
+                          <img src="pics/{{pic}}" class="img-fluid" alt="">
+                      </a>
+                  </div>
           </div>
-        </div>
-      {% endfor %}
-    </div>
-  </section>
+          <div style="margin: 1px;"></div>
+          {% endfor %}
+      </div>
 -->
 
-</div> <!-- close main --> 
+      <div class="row">
+        {% for pic in pics: %}
+          <div class="col-lg-3 col-md-4 p-3 mb-4 bg-white center shadow rounded d-flex align-items-stretch">
+            <div class="member-img">
+              <a class="example-image-link" href="pics/{{pic}}" data-lightbox="example-set" data-title="<-- click/tap image's left half to go backward; right half to go forward -->"><img class="img-fluid" src="pics/{{pic}}" alt=""/></a>
+            </div>
+          </div>
+          <div style="margin: 1px;"></div>
+          {% endfor %}
+      </div>
+
+    </div> <!-- /container -->
+
+
+    <div class="spacer"></div>
+
+    <div class="section-title" data-aos="zoom-out">
+      <h2>Labor Day 2022 Pictures</h2>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div class="container">
+        <a class="example-image-link" href="pics?event=1">Labor Day 2022 Pictures</a>
+    </div>
+
+
+  </div> <!-- closes content -->  
+
+</div> <!-- close main -->
 {% endblock %}
+
+{% block afterbody %}
+   <script src="{{ url_for('static', filename='js/lightbox-plus-jquery.min.js') }}"></script>
+{% endblock %}
+

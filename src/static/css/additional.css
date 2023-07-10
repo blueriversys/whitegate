@@ -352,15 +352,6 @@ a[data-toggle="collapse"] {
   background-color: hsl(219, 49%, 56%);
 }
 
-/*
-.about-body .map {
-  border-radius: 6px;
-  background-color: hsl(220, 6%, 90%);
-  padding: 15px;
-  text-align: center;
-}
-*/
-
 .map-responsive {
   border-radius: 6px;
   overflow:hidden;
@@ -373,14 +364,14 @@ a[data-toggle="collapse"] {
 .map-responsive iframe {
   left:0;
   top:0;
-  height:100%;
-  width:100%;
-  position:absolute;
+  height: 100%;
+  width: 100%;
+  position: absolute;
 }
 
-.weather {
-  border-radius: 6px;
-  width: 522px;
+.logo-div {
+  margin-left: 40px;
+  margin-right: 40px;
 }
 
 /*--------------------------------------------------------------
@@ -479,7 +470,7 @@ a[data-toggle="collapse"] {
 }
 
 .upload-browse {
-  max-width: 380px;  
+  max-width: 800px;
 /*  width: 100%; */
   background: hsl(186, 35%, 89%);
   margin-bottom: 5px;
@@ -500,6 +491,16 @@ a[data-toggle="collapse"] {
   margin-bottom: 1px;
   width: 130px;  
   min-height: 28px;
+  vertical-align: middle;
+}
+
+/* these are for the file upload progress bar */
+.upload-browse progress {
+  display: none;
+  margin-top: 1px;
+  margin-bottom: 1px;
+  width: 300px;
+  min-height: 20px;
   vertical-align: middle;
 }
 
@@ -964,6 +965,52 @@ img {
     display: block;
   }    
 }
+
+#dropbox {
+    border: 2px dashed #000000;
+    padding: 20px;
+}
+
+#dropbox.active {
+    border: 4px dashed #FF0000;
+}
+
+.progress-trough {
+    border: 1px solid #000000;
+    height: 24px;
+    width: 100%;
+    position: relative;
+}
+
+.progress-bar {
+    width: 50%;
+    height: 100%;
+    background-color: #0099FF;
+}
+
+
+
+/* these are for the email sending progress bar */
+.center-bar {
+  margin: auto;
+  width: 80%;
+}
+
+.progress-bar {
+  width: 100%;
+  background-color: #ddd;
+  border-radius: 5px;
+}
+
+.status-bar {
+  width: 1%;
+  line-height: 24px; /* center text vertically */
+  background-color: #1589FF;
+  text-align: center; /* center text horizontally */
+  color: white;
+  border-radius: 5px;
+}
+
 
 /*
 @media all and (min-width: 576px) {

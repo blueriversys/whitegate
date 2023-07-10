@@ -46,6 +46,12 @@ from random import randint
 #from firebase_admin import credentials
 #from firebase_admin import db
 from firebase import Firebase
+from uuid import uuid4
+
+''' for simulation of long running tasks '''
+from threading import Thread
+import random
+from time import sleep
 
 #import logging
 # https://realpython.com/python-logging/
@@ -72,10 +78,14 @@ WHITEGATE_EMAIL = 'info@whitegatecondo.com'
 WHITEGATE_NAME = 'Whitegate Condo'
 GMAIL_WHITEGATE_EMAIL = 'whitegatecondoinfo@gmail.com'
 SERVER_FOLDER = 'serverfiles'
+UPLOADED_FOLDER = 'uploadedfiles'
 RESIDENTS_DB = SERVER_FOLDER + "/" + "residents.json"
 ANNOUNCS_FILE = SERVER_FOLDER + "/" + "announcs.dat"
 LOG_FILE = SERVER_FOLDER + "/" + "whitegate.log"
 CONFIG_FILE = SERVER_FOLDER + "/" + "config.dat"
+PROTECTED_FOLDER = UPLOADED_FOLDER + "/protected"
+UNPROTECTED_FOLDER = UPLOADED_FOLDER + "/unprotected"
+email_percent = 1
 
 cgitb.enable()
 
@@ -88,28 +98,73 @@ with open(CONFIG_FILE, 'r') as f:
 print(f" service account: {config['service-account-filename']},   database url: {config['database-url']}")
 fireDB = Firebase(config['service-account-filename'], config['database-url'])
 
-# read residents json file and create dictionaries
-with open(RESIDENTS_DB, 'r') as f:
-    strContent = f.read()
-    jsonObj = json.loads(strContent)
-    residents = jsonObj['residents']
-    for resident in residents:
-        user = User(
-            users_repository.next_index(),
-            resident['unit'],
-            resident['userid'],
-            resident['password'],
-            resident['name'],
-            resident['email'],
-            resident['startdt'],
-            resident['phone'],
-            resident['type'],
-            resident['ownername'],
-            resident['owneremail'],
-            resident['ownerphone'],
-            resident['occupants']
-        )
-        users_repository.add_user_to_dict(user)
+'''
+ This is invoked from main() to read the residents
+ json file from disk and fill a user dict
+'''
+def load_users():
+    with open(RESIDENTS_DB, 'r') as f:
+        str_content = f.read()
+        json_obj = json.loads(str_content)
+        residents = json_obj['residents']
+        for resident in residents:
+            user = User(
+                users_repository.next_index(),
+                resident['unit'],
+                resident['userid'],
+                resident['password'],
+                resident['name'],
+                resident['email'],
+                resident['startdt'],
+                resident['phone'],
+                resident['type'],
+                resident['ownername'],
+                resident['owneremail'],
+                resident['ownerphone'],
+                resident['occupants']
+            )
+            users_repository.add_user_to_dict(user)
+
+''' These are long running related functions '''
+def email_task(subject, body):
+    global email_percent
+    email_to = get_all_emails()
+    total_count = len(email_to)
+    print(f" total count {total_count}")
+    count = 0
+    for single_email_to in email_to:
+        send_email_relay_host(single_email_to, subject, body)
+        count += 1
+        email_percent = int( (count / total_count ) * 100 )
+        #sleep(2)
+
+    #   FOR TESTING PURPOSES ONLY
+    #    for single_email_to in emailto:
+    #        print(f'sending email to {single_email_to}')
+    #        subj = mailObj['request']['subject']
+    #        subject = subj + ",   " + single_email_to
+    #        single_email_to = GMAIL_WHITEGATE_EMAIL
+    #        send_email_relay_host(single_email_to, subject, body)
+
+    email_percent = 100
+
+
+'''
+  will send email to all residents, one by one
+'''
+@app.route('/sendmail', methods=['POST'])
+def start_email_task():
+    global email_percent
+    email_percent = 1
+    t1 = Thread(target=email_task, args=(request.get_json()['subject'], request.get_json()['body']))
+    t1.start()
+    status = {'percent': email_percent}
+    return json.dumps(status)
+
+@app.route('/getstatus', methods=['GET'])
+def get_status():
+    status = {'percent': email_percent}
+    return json.dumps(status)
 
 
 '''
@@ -118,12 +173,33 @@ with open(RESIDENTS_DB, 'r') as f:
 @app.route('/docs/<path:filename>')
 @login_required
 def protected(filename):
-    return send_from_directory(app.static_folder + '/docs', filename)
+    #return send_from_directory(app.static_folder + '/docs', filename)
+    return send_from_directory(PROTECTED_FOLDER + '/docs', filename)
 
 @app.route('/opendocs/<path:filename>')
 def unprotected(filename):
-    return send_from_directory(app.static_folder + '/opendocs', filename)
+    return send_from_directory(UNPROTECTED_FOLDER + '/opendocs', filename)
 
+# Custom static data
+@app.route('/pics/<path:filename>')
+def custom_static(filename):
+    return send_from_directory(UNPROTECTED_FOLDER + '/pics', filename)
+
+@app.route('/logos/schools/<path:filename>')
+def custom_static_schools(filename):
+    return send_from_directory(UNPROTECTED_FOLDER + '/logos/schools', filename)
+
+@app.route('/logos/employers/<path:filename>')
+def custom_static_employers(filename):
+    return send_from_directory(UNPROTECTED_FOLDER + '/logos/employers', filename)
+
+@app.route('/logos/hospitals/<path:filename>')
+def custom_static_hospitals(filename):
+    return send_from_directory(UNPROTECTED_FOLDER + '/logos/hospitals', filename)
+
+@app.route('/logos/shopping/<path:filename>')
+def custom_static_shopping(filename):
+    return send_from_directory(UNPROTECTED_FOLDER + '/logos/shopping', filename)
 
 '''
   These are GET request routes
@@ -157,12 +233,16 @@ def home():
 #    if session.get('USERNAME') is not None:
 #        print(f'session["USERNAME"] is {session["USERNAME"]}')
 
-    pictures = get_files(app.static_folder + '/pics', '')
+    pictures = get_files(UNPROTECTED_FOLDER + '/pics', '')
     return render_template("home.html", pics=pictures)
 
 @app.route('/about')
 def about():
-    return render_template("about.html")
+    employers = get_files(UNPROTECTED_FOLDER + '/logos/employers', '')
+    schools = get_files(UNPROTECTED_FOLDER + '/logos/schools', '')
+    hospitals = get_files(UNPROTECTED_FOLDER + '/logos/hospitals', '')
+    shopping = get_files(UNPROTECTED_FOLDER + '/logos/shopping', '')
+    return render_template("about.html", emp_logos=employers, school_logos=schools, hosp_logos=hospitals, shop_logos=shopping)
 
 @app.route('/profile')
 def profile():
@@ -190,22 +270,21 @@ def get_announc_list():
 
 @app.route('/announcs')
 def announcs():
-    openfiles = get_files(app.static_folder + '/opendocs/files', '')
+    openfiles = get_files(UNPROTECTED_FOLDER + '/opendocs/files', '')
     return render_template("announcs.html", openfiles=openfiles)
 
 @app.route('/docs')
 def get_docs():
+    open_docs = get_files(UNPROTECTED_FOLDER + '/opendocs/files', '')
     if current_user.is_authenticated:
-        docs2020 = get_files(app.static_folder + '/docs/financial', 'Fin-2020')
-        docs2021 = get_files(app.static_folder + '/docs/financial', 'Fin-2021')
-        docs2022 = get_files(app.static_folder + '/docs/financial', 'Fin-2022')
-        docs2023 = get_files(app.static_folder + '/docs/financial', 'Fin-2023')
-        bylaws = get_files(app.static_folder + '/docs/bylaws', '')
-        otherdocs = get_files(app.static_folder + '/docs/other', '')
-        open_docs = get_files(app.static_folder + '/opendocs/files', '')
-        return render_template("docs.html", bylaws=bylaws, otherdocs=otherdocs, opendocs=open_docs, findocs2020=docs2020, findocs2021=docs2021, findocs2022=docs2022, findocs2023=docs2023)
+        docs2020 = get_files(PROTECTED_FOLDER + '/docs/financial', 'Fin-2020')
+        docs2021 = get_files(PROTECTED_FOLDER + '/docs/financial', 'Fin-2021')
+        docs2022 = get_files(PROTECTED_FOLDER + '/docs/financial', 'Fin-2022')
+        docs2023 = get_files(PROTECTED_FOLDER + '/docs/financial', 'Fin-2023')
+        bylaws = get_files(PROTECTED_FOLDER + '/docs/bylaws', '')
+        other_docs = get_files(PROTECTED_FOLDER + '/docs/other', '')
+        return render_template("docs.html", bylaws=bylaws, otherdocs=other_docs, opendocs=open_docs, findocs2020=docs2020, findocs2021=docs2021, findocs2022=docs2022, findocs2023=docs2023)
     else:
-        open_docs = get_files(app.static_folder + '/opendocs/files', '')
         return render_template("opendocs.html", opendocs=open_docs)
 
 @app.route('/users')
@@ -267,8 +346,13 @@ def get_loggedin_user():
 
 @app.route('/pics')
 def pics():
-    pictures = get_files(app.static_folder + '/pics', '')
-    return render_template("pics.html", pics=pictures)
+    if 'event' in request.args:
+        event = request.args['event']
+        pictures = get_files(UNPROTECTED_FOLDER + '/pics/event' + event, '')
+        return render_template("pics_events.html", pics=pictures)
+    else:
+        pictures = get_files(UNPROTECTED_FOLDER + '/pics', '')
+        return render_template("pics.html", pics=pictures)
 
 @app.route('/logout', methods=['GET'])
 def logout():
@@ -281,7 +365,6 @@ def logout():
     logout_user()
     return render_template("logout.html", loggedout_user=userid)
 
-
 '''
   These are POST request routes
 '''
@@ -289,9 +372,9 @@ def logout():
 def delete_file():
     file_obj = request.get_json()
     filepath = file_obj['request']['filepath']
-    print(f'file to be deleted {filepath}')
+    filepath = PROTECTED_FOLDER + '/' + filepath if filepath.startswith('docs') else UNPROTECTED_FOLDER + '/' + filepath
     try:
-        os.remove('static/'+filepath)
+        os.remove(filepath)
         status = 'success'
         log(f"userid {current_user.userid} deleted file {file_obj['request']['filename']}")
     except OSError:
@@ -300,45 +383,14 @@ def delete_file():
     return json.dumps(return_obj)
 
 #------------------------------------------------------------
-# will send email to all residents, one by one
+# will send email to a resident
 #------------------------------------------------------------
-@app.route('/sendmail', methods=['POST'])
-def send_bulk_email():
-    emailto = get_all_emails()
-#    subject = request.form.get('emailtitlefield')
-#    body = request.form.get('emailbodyfield')
-
-    mailObj = request.get_json()
-    subject = mailObj['request']['subject']
-    body = mailObj['request']['body']
-
-#    send_email_google(emailto, subject, body)
-
-    for single_email_to in emailto:
-        send_email_relay_host(single_email_to, subject, body)
-
-#   FOR TESTING PURPOSES ONLY
-#    for single_email_to in emailto:
-#        print(f'sending email to {single_email_to}')
-#        subj = mailObj['request']['subject']
-#        subject = subj + ",   " + single_email_to
-#        single_email_to = GMAIL_WHITEGATE_EMAIL 
-#        send_email_relay_host(single_email_to, subject, body)
-
-    resp_dict = {'status' : 'success'}
-    return_obj = {'response' : resp_dict}
-    return json.dumps(return_obj)
-
 @app.route('/sendsinglemail', methods=['POST'])
 def send_single_email():
     mailObj = request.get_json()
     emailto = mailObj['request']['emailto']
     subject = mailObj['request']['subject']
     body = mailObj['request']['body']
-    #print(f'emailto {emailto}  subject {subject}  body {body}')
-    #user = users_repository.get_user(username)
-    #passw = user.password
-    #body = 'Your credential to access whitegatecondo.com:\n\nusername: ' + username + "\npassword: " + passw
     if len(emailto.strip()):
         send_email_relay_host(emailto, subject, body)
     resp_dict = {'status' : 'success'}
@@ -371,19 +423,25 @@ def get_resident_json():
         return_obj = {'status' : 'not_found'}
         return json.dumps({'response' : return_obj})
 
-    resident = {'unit':user.unit,
-                'userid':user.userid,
-                'password':user.password,
-                'name':user.name,
-                'email':user.email,
-                'startdt':user.startdt,
-                'phone':user.phone,
-                'type': user.type,
-                'ownername': user.ownername,
-                'owneremail': user.owneremail,
-                'ownerphone': user.ownerphone,
-                'occupants': user.occupants
-                }
+    if current_user.type == '0':
+        passw = user.password
+    else:
+        passw = '******'
+
+    resident = {
+        'unit':user.unit,
+        'userid':user.userid,
+        'password':passw,
+        'name':user.name,
+        'email':user.email,
+        'startdt':user.startdt,
+        'phone':user.phone,
+        'type': user.type,
+        'ownername': user.ownername,
+        'owneremail': user.owneremail,
+        'ownerphone': user.ownerphone,
+        'occupants': user.occupants
+    }
 
     resp_dict = {'status' : 'success', 'resident':resident}
     return_obj = {'response':resp_dict}
@@ -391,36 +449,36 @@ def get_resident_json():
 
 @app.route('/saveresident', methods=["POST"])
 def save_resident_json():
-    userObj = request.get_json()
-    dbUser = users_repository.get_user_by_unit(userObj['resident']['unit'])
+    json_obj = request.get_json()
+    db_user = users_repository.get_user_by_unit(json_obj['resident']['unit'])
 
-    if dbUser == None:
-        password = generate_password(userObj['resident']['userid'])
+    if db_user is None:
+        password = generate_password(json_obj['resident']['userid'])
         user = User(
             users_repository.next_index(),
-            userObj['resident']['unit'],
-            userObj['resident']['userid'],
+            json_obj['resident']['unit'],
+            json_obj['resident']['userid'],
             password,
-            userObj['resident']['name'],
-            userObj['resident']['email'],
-            userObj['resident']['startdt'],
-            userObj['resident']['phone'],
-            userObj['resident']['type'],
-            userObj['resident']['ownername'],
-            userObj['resident']['owneremail'],
-            userObj['resident']['phone'],
-            userObj['resident']['occupants']
+            json_obj['resident']['name'],
+            json_obj['resident']['email'],
+            json_obj['resident']['startdt'],
+            json_obj['resident']['phone'],
+            json_obj['resident']['type'],
+            json_obj['resident']['ownername'],
+            json_obj['resident']['owneremail'],
+            json_obj['resident']['phone'],
+            json_obj['resident']['occupants']
         )
     else:
-        dbUser.name = userObj['resident']['name']
-        dbUser.email = userObj['resident']['email']
-        dbUser.startdt = userObj['resident']['startdt']
-        dbUser.phone = userObj['resident']['phone']
-        dbUser.ownername = userObj['resident']['ownername']
-        dbUser.owneremail = userObj['resident']['owneremail']
-        dbUser.ownerphone = userObj['resident']['ownerphone']
-        dbUser.occupants = userObj['resident']['occupants']
-        user = dbUser
+        db_user.name = json_obj['resident']['name']
+        db_user.email = json_obj['resident']['email']
+        db_user.startdt = json_obj['resident']['startdt']
+        db_user.phone = json_obj['resident']['phone']
+        db_user.ownername = json_obj['resident']['ownername']
+        db_user.owneremail = json_obj['resident']['owneremail']
+        db_user.ownerphone = json_obj['resident']['ownerphone']
+        db_user.occupants = json_obj['resident']['occupants']
+        user = db_user
         #print(f'delete before adding to db')
         #users_repository.delete_user(user)
 
@@ -438,25 +496,25 @@ def save_resident_json():
 
 @app.route('/saveresidentpartial', methods=["POST"])
 def save_resident_partial():
-    userObj = request.get_json()
-    dbUser = users_repository.get_user_by_unit(userObj['resident']['unit'])
+    json_obj = request.get_json()
+    db_user = users_repository.get_user_by_unit(json_obj['resident']['unit'])
 
-    if dbUser == None:
+    if db_user is None:
         return_obj = {'status': 'failure'}
         return json.dumps({'response': return_obj})
     else:
-        dbUser.userid = userObj['resident']['userid']
-        dbUser.password = userObj['resident']['password']
-        dbUser.name = userObj['resident']['name']
-        dbUser.email = userObj['resident']['email']
-        dbUser.phone = userObj['resident']['phone']
-        dbUser.startdt = userObj['resident']['startdt']
-        dbUser.type = userObj['resident']['type']
-        dbUser.ownername = userObj['resident']['ownername']
-        dbUser.owneremail = userObj['resident']['owneremail']
-        dbUser.ownerphone = userObj['resident']['ownerphone']
-        dbUser.occupants = userObj['resident']['occupants']
-        user = dbUser
+        db_user.userid = json_obj['resident']['userid']
+        db_user.password = json_obj['resident']['password']
+        db_user.name = json_obj['resident']['name']
+        db_user.email = json_obj['resident']['email']
+        db_user.phone = json_obj['resident']['phone']
+        db_user.startdt = json_obj['resident']['startdt']
+        db_user.type = json_obj['resident']['type']
+        db_user.ownername = json_obj['resident']['ownername']
+        db_user.owneremail = json_obj['resident']['owneremail']
+        db_user.ownerphone = json_obj['resident']['ownerphone']
+        db_user.occupants = json_obj['resident']['occupants']
+        user = db_user
 
     # this assign the user object on the hash (dict), where the unit is key, user is value
     users_repository.save_user(user)
@@ -505,55 +563,57 @@ def change_userid():
     return json.dumps({'response': return_obj})
 
 
-'''
-  These are GET and POST request functions
-'''
 @app.route('/upload', methods=['GET' , 'POST'])
 @login_required
 def upload():
     if request.method == 'POST':
         uploaded_file = request.files['file']
         uploaded_convname = request.form['convname']
-        #print(f'size {uploaded_file.content_length}  file name received {uploaded_file.filename}  special name: {uploaded_convname}')
+        file_size = request.form['filesize']
+        print(f'size {file_size}  file name received {uploaded_file.filename}  special name: {uploaded_convname}')
 
         filename = secure_filename(uploaded_file.filename)
         filename = filename.replace('_', '-')
         filename = filename.replace(' ', '-')
         fullpath = ''
         if uploaded_convname == 'announc':
-            fullpath = app.static_folder + '/opendocs/announcs/' + filename
+            fullpath = UNPROTECTED_FOLDER + '/opendocs/announcs/' + filename
         elif uploaded_convname == 'pubfile':
-            fullpath = app.static_folder + '/opendocs/files/' + filename
+            fullpath = UNPROTECTED_FOLDER + '/opendocs/files/' + filename
         elif uploaded_convname == 'bylaws':
-            fullpath = app.static_folder + '/docs/bylaws/' + filename
+            fullpath = PROTECTED_FOLDER + '/docs/bylaws/' + filename
         elif uploaded_convname == 'otherdoc':
-            fullpath = app.static_folder + '/docs/other/' + filename
+            fullpath = PROTECTED_FOLDER + '/docs/other/' + filename
         elif uploaded_convname == 'picture':
-            fullpath = app.static_folder + '/pics/' + filename
+            fullpath = UNPROTECTED_FOLDER + '/pics/' + filename
         else:
-            fullpath = app.static_folder + '/docs/financial/' + "Fin-" + uploaded_convname + ".pdf"
+            fullpath = PROTECTED_FOLDER + '/docs/financial/' + "Fin-" + uploaded_convname + ".pdf"
 
         uploaded_file.stream.seek(0)
         uploaded_file.save(fullpath)
         return render_template("upload.html")
     else:
-        docs2020 = get_files(app.static_folder + '/docs/financial', 'Fin-2020')
-        docs2021 = get_files(app.static_folder + '/docs/financial', 'Fin-2021')
-        docs2022 = get_files(app.static_folder + '/docs/financial', 'Fin-2022')
-        bylaws = get_files(app.static_folder + '/docs/bylaws', '')
-        otherdocs = get_files(app.static_folder + '/docs/other', '')
-        pics = get_files(app.static_folder + '/pics', '')
-        return render_template("upload.html", bylaws=bylaws, otherdocs=otherdocs, findocs2020=docs2020,
-                               findocs2021=docs2021, findocs2022=docs2022, pics=pics)
+        docs2020 = get_files(PROTECTED_FOLDER + '/docs/financial', 'Fin-2020')
+        docs2021 = get_files(PROTECTED_FOLDER + '/docs/financial', 'Fin-2021')
+        docs2022 = get_files(PROTECTED_FOLDER + '/docs/financial', 'Fin-2022')
+        docs2023 = get_files(PROTECTED_FOLDER + '/docs/financial', 'Fin-2023')
+        bylaws = get_files(PROTECTED_FOLDER + '/docs/bylaws', '')
+        otherdocs = get_files(PROTECTED_FOLDER + '/docs/other', '')
+        opendocs = get_files(UNPROTECTED_FOLDER + '/opendocs/files', '')
+        picts = get_files(UNPROTECTED_FOLDER + '/pics', '')
+        return render_template("upload.html", bylaws=bylaws, otherdocs=otherdocs, opendocs=opendocs,
+                               findocs2020=docs2020, findocs2021=docs2021,
+                               findocs2022=docs2022, findocs2023=docs2023,
+                               pics=picts)
 
 @app.route('/login', methods=['GET' , 'POST'])
 def login():
     if request.method == 'POST':
         userid = request.form['userid']
         password = request.form['password']
-        registeredUser = users_repository.get_user_by_userid(userid)
+        registered_user = users_repository.get_user_by_userid(userid)
 
-        if registeredUser == None:
+        if registered_user is None:
             flash("Invalid userid or password")
             return render_template("login.html")
 
@@ -562,11 +622,11 @@ def login():
         if not next_page:
             next_page = url_for('home')
 
-        if registeredUser.password == password:
-            #print('Login successful: user %s , password %s' % (registeredUser.username, registeredUser.password))
-            msg = f'user {registeredUser.userid} logged in'
+        if registered_user.password == password:
+            #print('Login successful: user %s , password %s' % (registered_user.username, registered_user.password))
+            msg = f'user {registered_user.userid} logged in'
             log(msg)
-            login_user(registeredUser)
+            login_user(registered_user)
             return redirect(next_page)
         else:
             #return abort(401)
@@ -579,9 +639,9 @@ def login():
 def register():
     if request.method == 'POST':
         userid = request.form['userid']
-        registeredUser = users_repository.get_user_by_userid(userid)
+        registered_user = users_repository.get_user_by_userid(userid)
 
-        if registeredUser != None:
+        if registered_user is not None:
             flash("User already exists.")
             return render_template("register.html")
 
@@ -717,14 +777,26 @@ def load_user(userid):
 
 def get_files(folder, pattern):
     if pattern:
-       arr = [x for x in os.listdir(folder) if x.startswith(pattern)]    
+        arr = [x for x in os.listdir(folder) if x.startswith(pattern)]
     else:
-       arr = os.listdir(folder)
-    #arr = glob.glob(pattern)
+        #arr = os.listdir(folder)
+        arr = []
+        for fname in os.listdir(folder):
+            path = os.path.join(folder, fname)
+            if not os.path.isdir(path):
+                arr.append(fname)
+
     arr.sort()
     return arr
 
-
-# host='0.0.0.0' means "accept connections from any client ip address"
-if __name__ == '__main__':
+'''
+  host='0.0.0.0' means "accept connections from any client ip address".
+  This is only used for testing purposes. In production, server.py is loaded by passenger_wsgi.py,
+  which is where we load the users from desk into a dict since main() below will never run.
+'''
+def main():
+    load_users()
     app.run(host='0.0.0.0', port=9999, debug=False)
+
+if __name__ == '__main__':
+    main()

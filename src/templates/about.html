@@ -48,7 +48,7 @@
             We are a small and vibrant community in Nashua, NH.
             Our goal is to provide our residents with the best of fine living and safety.
             We are located at the heart of the Daniel Webster shopping
-            corridor, surrounded by the best in fine dining and world class shopping experience,
+            corridor, surrounded by the best in fine dining and world-class shopping experience,
             besides the highly regarded Pheasant Lane Mall.  
 
             <div class="spacer"></div>
@@ -69,23 +69,73 @@
 
             <h4>42.7095348,  -71.4472455</h4>
             
-            <div class="map-responsive">
+            <div class="map-responsive iframe-div">
               <!--<iframe src="https://maps.google.com/maps?width=900&amp;height=500&amp;hl=en&amp;q=33%20SPIT%20BROOK%20RD%20Nashua+(Whitegate%20Condominium)&amp;t=&amp;z=17&amp;ie=UTF8&amp;iwloc=B&amp;output=embed" width="900" height="500" allowfullscreen></iframe>-->
               <iframe src="https://maps.google.com/maps?hl=en&amp;q=33%20SPIT%20BROOK%20RD%20Nashua+(Whitegate%20Condominium)&amp;t=&amp;z=17&amp;ie=UTF8&amp;iwloc=B&amp;output=embed" frameborder='0' allowfullscreen></iframe>
             </div>
-
-            <div class="spacer"></div>
-            <div class="spacer"></div>
-            <div class="spacer"></div>
-
-            Here's what the weather looks like:
-            <div class="map-responsive weather">
-              <iframe src="https://www.weatherlink.com/embeddablePage/show/ae294d41896b40a296594910b614eab2/wide" width='560' height='480' frameborder='0'></iframe>
-            </div>
-
           </div>
       </div>
+
+
+      <div style="margin: 100px;"></div>
+      <div class="section-title" data-aos="zoom-out">
+        <h2 style="font-size: 13px;">Nearby hospitals, medical centers, urgent care</h2>
+      </div>
+      <div style="margin: 40px;"></div>
+      <div class="row logo-div">
+          {% for logo in hosp_logos: %}
+              <div style="margin: 10px;"><img src="logos/hospitals/{{logo}}" style="width: 100px; height: 100px;" class="img-thumbnail rounded-2" alt=""/></div>
+          {% endfor %}
+      </div>
+
+
+      <div style="margin: 80px;"></div>
+      <div class="section-title" data-aos="zoom-out">
+        <h2 style="font-size: 13px;">Nearby schools, colleges, universities</h2>
+      </div>
+      <div style="margin: 40px;"></div>
+      <div class="row logo-div">
+          {% for logo in school_logos: %}
+              <div style="margin: 10px;"><img src="logos/schools/{{logo}}" style="width: 100px; height: 100px;" class="img-thumbnail rounded-2" alt=""/></div>
+          {% endfor %}
+      </div>
+
+
+      <div style="margin: 80px;"></div>
+      <div class="section-title" data-aos="zoom-out">
+        <h2 style="font-size: 13px;">Shopping</h2>
+      </div>
+      <div style="margin: 40px;"></div>
+      <div class="row logo-div">
+          {% for logo in shop_logos: %}
+              <div style="margin: 10px;"><img src="logos/shopping/{{logo}}" style="width: 100px; height: 100px;" class="img-thumbnail rounded-2" alt=""/></div>
+          {% endfor %}
+      </div>
+
+
+      <div style="margin: 80px;"></div>
+      <div class="section-title" data-aos="zoom-out">
+        <h2 style="font-size: 13px;">These are nearby employers</h2>
+      </div>
+      <div style="margin: 40px;"></div>
+      <div class="row logo-div">
+          {% for logo in emp_logos: %}
+              <div style="margin: 10px;"><img src="logos/employers/{{logo}}" style="width: 100px; height: 100px;" class="img-thumbnail rounded-2" alt=""/></div>
+          {% endfor %}
+      </div>
+
+
+      <div style="margin: 80px;"></div>
+      <div class="section-title" data-aos="zoom-out">
+        <h2 style="font-size: 13px;">Here's what the weather looks like now</h2>
+      </div>
+      <div style="margin: 20px;"></div>
+      <div style="width=100%; height: 600px; text-align: center;">
+        <iframe style="width: 520px; height: 490px; border-radius: 8px;" src="https://www.weatherlink.com/embeddablePage/show/ae294d41896b40a296594910b614eab2/wide" frameborder='0'></iframe>
+      </div>
+
     </div>
+
   </div> 
 
 </div> <!-- close main -->

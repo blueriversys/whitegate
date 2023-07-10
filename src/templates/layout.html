@@ -10,7 +10,7 @@
       <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <link rel="icon" type="image/png" href={{ url_for('static', filename='img/favicon.png') }}>
+      <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.png') }}">
 
       <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
@@ -19,8 +19,8 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
       <!-- required for additional decoration -->
-      <link rel="stylesheet" href={{ url_for('static', filename='css/additional.css') }}>
-      
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/additional.css') }}">
+
       <title>WHITEGATE Condominium</title>
 
       <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"> -->
@@ -28,22 +28,20 @@
 
       <!-- fonts -->
       <!--<link href="https://fonts.google.com/specimen/Fondamento" rel="stylesheet"> -->
+      <!--<link href="https://fonts.googleapis.com/css2?family=Fondamento&display=swap" rel="stylesheet"> -->
 
       <!--
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Fondamento&display=swap" rel="stylesheet">       
       -->
+
+      {% block insidehead %}{% endblock %}
+
     </head>
 
     <body onload="onLoadAction()">
         <!-- this means: insert here the section of -->
         {% block body %}{% endblock %}
-
-        <!--   
-            <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
-            <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-        -->
 
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -53,11 +51,11 @@
 
         <!-- script.js needs to be loaded after jquery -->
         <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/carousel.js') }}"></script>
 
+        <!-- <script src="{{ url_for('static', filename='js/carousel.js') }}"></script> -->
 
         <!-- Font Awesome JS 
-        <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+        <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"       integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
         <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
         -->
 

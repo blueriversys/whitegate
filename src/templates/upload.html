@@ -46,7 +46,8 @@
           <div class="upload-block-row">
                   <div class="col-1 upload-browse">
                     <input id="bylaws" type="file"/>
-                    <button id="upload-button" onclick="uploadFile('bylaws')"> Upload a Bylaw</button>
+                    <button id="upload-button" onclick="uploadFileProgress('bylaws', 'bylaws', 'progressBar-bylaws')"> Upload a ByLaw</button>
+                    <progress id="progressBar-bylaws" value="0" max="100"/>
                   </div>
           </div>
         </div>
@@ -58,7 +59,8 @@
           <div class="upload-block-row">
                   <div class="col-1 upload-browse">
                     <input id="otherdoc" type="file"/>
-                    <button id="upload-button" onclick="uploadFile('otherdoc')"> Upload a Document</button>
+                    <button id="upload-button" onclick="uploadFileProgress('otherdoc', 'otherdoc', 'progressBar-otherdoc')"> Upload a Document</button>
+                    <progress id="progressBar-otherdoc" value="0" max="100"/>
                   </div>
           </div>
         </div>
@@ -70,7 +72,8 @@
           <div class="upload-block-row">
                   <div class="col-1 upload-browse">
                     <input id="pubfile" type="file"/>
-                    <button id="upload-button" onclick="uploadFile('pubfile')"> Upload a Public Document</button>
+                    <button id="upload-button" onclick="uploadFileProgress('pubfile', 'pubfile', 'progressBar-pubfile')"> Upload a Public Document</button>
+                    <progress id="progressBar-pubfile" value="0" max="100"/>
                   </div>
           </div>
         </div>
@@ -82,7 +85,8 @@
           <div class="upload-block-row">
                   <div class="col-1 upload-browse">
                     <input id="picture" type="file"/>
-                    <button id="upload-button" onclick="uploadFile('picture')"> Upload a Picture</button>
+                    <button id="upload-button" onclick="uploadFileProgress('picture', 'picture', 'progressBar-pic')"> Upload a Picture</button>
+                    <progress id="progressBar-pic" value="0" max="100"/>
                   </div>
           </div>
         </div>
@@ -262,51 +266,63 @@
           <div class="upload-block-row">
             <div class="col-1 upload-browse">
               <input id="2023-01" type="file"/>
-              <button id="upload-button" onclick="uploadFile('2023-01')"> Upload Jan-2023</button>
+              <button id="upload-button" onclick="uploadFileProgress('2023-01', '2023-01', 'progressBar-fin-2023-01')"> Upload Jan-2023</button>
+              <progress id="progressBar-fin-2023-01" value="0" max="100"/>
             </div>
             <div class="col-1 upload-browse">
               <input id="2023-02" type="file"/>
-              <button id="upload-button" onclick="uploadFile('2023-02')"> Upload Feb-2023</button>
+              <button id="upload-button" onclick="uploadFileProgress('2023-02', '2023-02', 'progressBar-fin-2023-02')"> Upload Feb-2023</button>
+              <progress id="progressBar-fin-2023-02" value="0" max="100"/>
             </div>
             <div class="col-1 upload-browse">
               <input id="2023-03" type="file"/>
-              <button id="upload-button" onclick="uploadFile('2023-03')"> Upload Mar-2023</button>
+              <button id="upload-button" onclick="uploadFileProgress('2023-03', '2023-03', 'progressBar-fin-2023-03')"> Upload Mar-2023</button>
+              <progress id="progressBar-fin-2023-03" value="0" max="100"/>
             </div>
             <div class="col-1 upload-browse">
               <input id="2023-04" type="file"/>
-              <button id="upload-button" onclick="uploadFile('2023-04')"> Upload Apr-2023</button>
+              <button id="upload-button" onclick="uploadFileProgress('2023-04', '2023-04', 'progressBar-fin-2023-04')"> Upload Apr-2023</button>
+              <progress id="progressBar-fin-2023-04" value="0" max="100"/>
             </div>
             <div class="col-1 upload-browse">
               <input id="2023-05" type="file"/>
-              <button id="upload-button" onclick="uploadFile('2023-05')"> Upload May-2023</button>
+              <button id="upload-button" onclick="uploadFileProgress('2023-05', '2023-05', 'progressBar-fin-2023-05')"> Upload May-2023</button>
+              <progress id="progressBar-fin-2023-05" value="0" max="100"/>
             </div>
             <div class="col-1 upload-browse">
               <input id="2023-06" type="file"/>
-              <button id="upload-button" onclick="uploadFile('2023-06')"> Upload Jun-2023</button>
+              <button id="upload-button" onclick="uploadFileProgress('2023-06', '2023-06', 'progressBar-fin-2023-06')"> Upload Jun-2023</button>
+              <progress id="progressBar-fin-2023-06" value="0" max="100"/>
             </div>
             <div class="col-1 upload-browse">
               <input id="2023-07" type="file"/>
-              <button id="upload-button" onclick="uploadFile('2023-07')"> Upload Jul-2023</button>
+              <button id="upload-button" onclick="uploadFileProgress('2023-07', '2023-07', 'progressBar-fin-2023-07')"> Upload Jul-2023</button>
+              <progress id="progressBar-fin-2023-07" value="0" max="100"/>
             </div>
             <div class="col-1 upload-browse">
               <input id="2023-08" type="file"/>
-              <button id="upload-button" onclick="uploadFile('2023-08')"> Upload Aug-2023</button>
+              <button id="upload-button" onclick="uploadFileProgress('2023-08', '2023-08', 'progressBar-fin-2023-08')"> Upload Aug-2023</button>
+              <progress id="progressBar-fin-2023-08" value="0" max="100"/>
             </div>
             <div class="col-1 upload-browse">
               <input id="2023-09" type="file"/>
-              <button id="upload-button" onclick="uploadFile('2023-09')"> Upload Sep-2023</button>
+              <button id="upload-button" onclick="uploadFileProgress('2023-09', '2023-09', 'progressBar-fin-2023-09')"> Upload Sep-2023</button>
+              <progress id="progressBar-fin-2023-09" value="0" max="100"/>
             </div>
             <div class="col-1 upload-browse">
               <input id="2023-10" type="file"/>
-              <button id="upload-button" onclick="uploadFile('2023-10')"> Upload Oct-2023</button>
+              <button id="upload-button" onclick="uploadFileProgress('2023-10', '2023-10', 'progressBar-fin-2023-10')"> Upload Oct-2023</button>
+              <progress id="progressBar-fin-2023-10" value="0" max="100"/>
             </div>
             <div class="col-1 upload-browse">
               <input id="2023-11" type="file"/>
-              <button id="upload-button" onclick="uploadFile('2023-11')"> Upload Nov-2023</button>
+              <button id="upload-button" onclick="uploadFileProgress('2023-11', '2023-11', 'progressBar-fin-2023-11')"> Upload Nov-2023</button>
+              <progress id="progressBar-fin-2023-11" value="0" max="100"/>
             </div>
             <div class="col-1 upload-browse">
               <input id="2023-12" type="file"/>
-              <button id="upload-button" onclick="uploadFile('2023-12')"> Upload Dec-2023</button>
+              <button id="upload-button" onclick="uploadFileProgress('2023-12', '2023-12', 'progressBar-fin-2023-12')"> Upload Dec-2023</button>
+              <progress id="progressBar-fin-2023-12" value="0" max="100"/>
             </div>
           </div>
 
@@ -342,6 +358,18 @@
                   {% for doc in otherdocs %}
                       <div class="col-1 doc-col">
                           {{doc}} <button id="deletebutton_id" onClick="deleteFile('docs/other/{{doc}}','{{doc}}');">delete</button>
+                      </div>
+                  {% endfor %}
+              </div>
+          </div>
+          <p class="spacer"></p>
+
+          <h1>Open View Documents</h1>
+          <div class="app-container">
+              <div class="row">
+                  {% for doc in opendocs %}
+                      <div class="col-1 doc-col">
+                          {{doc}} <button id="deletebutton_id" onClick="deleteFile('opendocs/files/{{doc}}','{{doc}}');">delete</button>
                       </div>
                   {% endfor %}
               </div>
@@ -391,6 +419,20 @@
           <div class="app-container">
               <div class="row">
                   {% for doc in findocs2022 %}
+                      <div class="col-1 doc-col">
+                          {{doc}} <button id="deletebutton_id" onClick="deleteFile('docs/financial/{{doc}}','{{doc}}');">delete</button>
+                      </div>
+                  {% endfor %}
+              </div>
+          </div>
+
+          <p class="spacer"></p>
+
+          <h1>Financial Statements</h1>
+          <h2>2023</h2>
+          <div class="app-container">
+              <div class="row">
+                  {% for doc in findocs2023 %}
                       <div class="col-1 doc-col">
                           {{doc}} <button id="deletebutton_id" onClick="deleteFile('docs/financial/{{doc}}','{{doc}}');">delete</button>
                       </div>
@@ -721,7 +763,7 @@
               residents after an upload is made.
           </div>
           <p>
-              <div class="announc-box">
+              <center class="announc-box">
 
                   <div class="inputboxline">
                     <div class="inputcaptionbox">
@@ -751,8 +793,14 @@
                         <button id="emailbutton_id" onClick="sendBulkEmail();">Send email to all residents</button>
                       </div>  
                   </div>
-              
-              </div>  
+
+                  <div class="center-bar">
+                    <div id="email-progress-bar" class="progress-bar">
+                      <div id="status-bar" class="status-bar">1%</div>
+                    </div>
+                  </div>
+
+              </div>
         </div> <!-- close card-body -->
       </div> <!-- close app-container -->
   </div> <!-- closes content -->

@@ -33,38 +33,6 @@
         </ul>
     </nav>
 
-
-    <!--
-        <div id="myNavbar" class="collapse navbar-collapse">
-            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                <a class="nav-link active" href="home"><i class="fa fa-fw fa-home"></i> Home</a>
-                <a class="nav-link" href="about"><i class="fa fa-fw fa-info"></i> About</a>
-                <a class="nav-link" href="announcs"><i class="fa fa-fw fa-bullhorn"></i> Announcements</a>
-                <a class="nav-link" href="docs"><i class="fa fa-fw fa-book"></i> Documents</a>
-
-                {% if (current_user.is_authenticated and current_user.get_type() != 3) %}
-                    <a class="nav-link" href="upload" aria-selected="false"><i class="fa fa-fw fa-upload"></i> Upload</a>
-                {% endif %}
-
-                <a class="nav-link" href="blog"><i class="fa fa-fw fa-pencil-square-o"></i> Blog</a>
-                <a class="nav-link" href="pics"><i class="fa fa-fw fa-picture-o"></i> Pictures</a>
-                {% if current_user.is_authenticated  %}
-                    <a class="nav-link" href="logout" aria-selected="false"><i class="fa fa-fw fa-sign-out"></i> Logout</a>
-                {% else %}
-                    <a class="nav-link" href="login" aria-selected="false"><i class="fa fa-fw fa-sign-in"></i> Login</a>
-                {% endif %}
-                this is how we do drop down menu      
-                    <div class="dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-fw fa-user"></i> Login</a>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="#">Admin</a>
-                        <a class="dropdown-item" href="#">Residents</a>
-                    </div>
-                    </div>
-            </div>
-        </div>
-    -->    
-
     <div class="content">
         {% include "mobile-menu.html" %}
 
@@ -160,3 +128,8 @@
 </div>
 
 {% endblock %}
+
+{% block afterbody %}
+   <script src="{{ url_for('static', filename='js/carousel.js') }}"></script>
+{% endblock %}
+

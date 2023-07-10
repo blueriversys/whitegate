@@ -21,12 +21,18 @@ $(document).ready(function() {
     $('a[aria-expanded=true]').attr('aria-expanded', 'false');
   });
 */
+  let timeout;
+  //document.getElementById("progress-bar").style.display = "none";
+
 });
 
 
 //SERVER = 'localhost'
 //PORT   = 9999
 
+function onLoadAction() {
+    console.log('here in onLoadAction()')
+}
 
 function sendEmail(json) {
   var userid = json.response.resident.userid;
@@ -68,43 +74,75 @@ function sendEmail(json) {
 }
 
 
-// here we make a request to "sendmail"
-function sendBulkEmail() {
-  var request = new XMLHttpRequest();
-  request.open('POST', '/sendmail', true)
-  
-  request.onload = function () {
-    // Begin accessing JSON data here
-    var json = JSON.parse(this.response);
-    
-    if (request.status >= 200 && request.status < 400) {
-        if (json.response.status == 'error') {
-            alert('Error sending email to all users');
-        }
-        else {
-            alert('Email sent to all users');
-        }
-    } 
-    else {
-        alert('Error sending email to all users');
+
+async function updateProgressBar(percent) {
+    var element = document.getElementById("status-bar");
+    element.style.width = percent + '%';
+    element.innerHTML = percent + '%';
+}
+
+async function sendBulkEmail() {
+    var requestObj = new Object();
+    requestObj.subject = document.getElementById('titlefield_id').value;
+    requestObj.body = document.getElementById('emailtextfield_id').value;
+
+    if ( requestObj.subject.trim().length == 0 || requestObj.body.trim().length == 0 ) {
+        alert("Title and Body of the message are required");
+        return;
     }
 
-    return;
-  }    
+    // show the progress bar
+    document.getElementById("progress-bar").style.display = "block";
 
-  var requestObj = new Object();
-  requestObj.subject = document.getElementById('titlefield_id').value;
-  requestObj.body = document.getElementById('emailtextfield_id').value;
+    // init progress bar data
+    updateProgressBar(1);
 
-  if ( requestObj.subject.trim().length == 0 || requestObj.body.trim().length == 0 ) {
-      alert("Title and Body of the message are required");
-      return;
-  }
+    try {
+      // start a task on the server
+      const res = await fetch("/sendmail", {
+         // Adding method type
+         method: "POST",
+         headers: {
+             'Accept': 'application/json',
+             'Content-Type': 'application/json'
+         },
+         // Adding body or contents to send
+         body: JSON.stringify({
+             subject: requestObj.subject,
+             body: requestObj.body
+         }),
+      });
 
-  jsonStr = '{ "request": ' + JSON.stringify(requestObj) + '}';
-  request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-  request.send(jsonStr);
+      // init a timer, trigger every 1 second
+      timeout = setInterval(getStatus, 1000);
+    } catch (e) {
+      console.error("Error: ", e);
+    }
 }
+
+  // function will be invoked by the timer until server returns 100 (i.e.100%)
+async function getStatus() {
+    let status;
+
+    try {
+      const res = await fetch("/getstatus");
+      status = await res.json();
+    } catch (e) {
+      console.error("Error: ", e);
+    }
+
+    updateProgressBar(status.percent);
+
+    if (status.percent == 100) {
+      clearInterval(timeout);
+      document.getElementById("progress-bar").style.display = "none";
+      alert('Email sent to all users');
+      document.getElementById('titlefield_id').value = '';
+      document.getElementById('emailtextfield_id').value = '';
+      return false;
+    }
+}
+
 
 
 // we retrieve the user data from the database first
@@ -145,43 +183,6 @@ function startSendEmail() {
   }    
 
 }
-
-function saveAnnouncs() {
-  var announcs = document.getElementById("announctextfield_id").value;
-  var request = new XMLHttpRequest();
-  request.open('POST', '/saveannouncs', true)
-
-  var requestObj = new Object();
-  requestObj.lines = announcs;
-  jsonStr = '{ "announc": ' + JSON.stringify(requestObj) + '}';
-  request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-  request.send(jsonStr);
-
-  request.onload = function () {
-    // Begin accessing JSON data here
-    var json = JSON.parse(this.response);
-
-    if (request.status >= 200 && request.status < 400) {
-        if (json.response.status == 'success') {
-            alert('Announcements have been saved.');
-            return;
-        }
-        else {
-            alert('There was a problem trying to save the announcements.');
-            return;
-        }
-    }
-    else {
-        alert('Error saving the announcements.');
-        return;
-    }
-  }
-
-}
-
-
-
-
 
 function retrieveUsers() {
   var request = new XMLHttpRequest()
